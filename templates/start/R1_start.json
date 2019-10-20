@@ -1,4 +1,6 @@
 {
   "name": "R1",
-  "rnum": "1"
+  "rnum": "1",
+  "eth0-subnet": "1",
+  "eth1-subnet": "4"
 }
