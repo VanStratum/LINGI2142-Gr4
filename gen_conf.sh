@@ -17,8 +17,8 @@ do
     then
       in=$d1$f
       out=$CONFIG_DIR$(echo $f | sed -e 's/.json//g')
-      echo $template
       ./make_router_conf.py -i $in -t $template -o $out
+      echo "$out generated"
       chmod +x $out
     fi
   done
