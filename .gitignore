@@ -1,6 +1,15 @@
 # Created by https://www.gitignore.io/api/vim,linux
 # Edit at https://www.gitignore.io/?templates=vim,linux
 
+
+cleanup.sh
+connect_to.sh
+create_network.sh
+_node_utils.sh
+*pyc
+make_router_conf.py
+network_cfg/*
+
 ### Linux ###
 *~
 
