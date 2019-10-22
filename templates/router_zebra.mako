@@ -11,6 +11,9 @@ enable password zebra
 interface lo
  description loopback.
 !
+interface lo1
+ description lo1.
+!
 <% r = range(0,data['n_iface']) %>
 % for i in r:
 <% name = 'eth%s-subnet'%i %>

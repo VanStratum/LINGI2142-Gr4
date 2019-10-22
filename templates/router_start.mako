@@ -4,7 +4,10 @@
 
 ldconfig
 
-ip -6 addr add fde4:4:10::${data['rnum']}${data['rnum']}/64 dev lo
+ip link add link lo name lo1 type dummy
+ip link set dev lo1 up
+ip -6 addr add fde4:4:10::${data['rnum']}${data['rnum']}/128 dev lo1
+#ip -6 addr add fde4:4:10::${data['rnum']}${data['rnum']}/128 dev lo label lo:10
 
 iface0=${data['name']}-eth0
 
