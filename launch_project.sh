@@ -24,7 +24,11 @@ sudo ./create_network.sh isp4_topo
 info "Launching ssh proxies"
 ./setup_ssh_proxy.sh
 
-sleep 5
+if [ $1 -eq 1 ]
+then
+  info "Waiting 30 seconds for the network booting before launching the tests"
+  sleep 30
+  python3 test/test_main.py
+fi
 
-info "Launching tests"
-sudo ./test/test.sh
+info "End of startup script"
