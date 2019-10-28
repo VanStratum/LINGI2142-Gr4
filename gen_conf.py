@@ -59,7 +59,7 @@ for t in templates:
         if exe:
             chmod(out,stat.S_IXUSR|stat.S_IXGRP|stat.S_IWUSR|stat.S_IXOTH|stat.S_IRUSR)
 
-for i in [j for j in templates_content if '.conf' in j]:
+for i in [j for j in templates_content if j not in templates and j not in config_files]:
     print(i)
     for k in listdir(CONFIG_DIR):
         dir_item = '%s%s'%(CONFIG_DIR,k)

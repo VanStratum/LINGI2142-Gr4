@@ -10,15 +10,17 @@ source _node_utils.sh
 
 ERRORS=0
 
+ROUTER_PRE='fde4:4:f000:'
+
 declare -A test_array=(
-  ['R1-eth0']='fde4:4:1::22'
-  ['R1-eth1']='fde4:4:4::44'
-  ['R2-eth0']='fde4:4:1::11'
-  ['R2-eth1']='fde4:4:2::33'
-  ['R3-eth0']='fde4:4:2::22'
-  ['R3-eth1']='fde4:4:3::44'
-  ['R4-eth0']='fde4:4:3::33'
-  ['R4-eth1']='fde4:4:4::11'
+  ['R1-eth0']="$ROUTER_PRE:3"
+  ['R1-eth1']="$ROUTER_PRE:8"
+  ['R2-eth0']="$ROUTER_PRE:2"
+  ['R2-eth1']="$ROUTER_PRE:5"
+  ['R3-eth0']="$ROUTER_PRE:4"
+  ['R3-eth1']="$ROUTER_PRE:7"
+  ['R4-eth0']="$ROUTER_PRE:6"
+  ['R4-eth1']="$ROUTER_PRE:9"
 )
 
 test_p2p_connectivity() {
@@ -26,7 +28,7 @@ test_p2p_connectivity() {
   do
     echo -e '#####################'
     echo -e '# Testing node : '$router' #'
-    echo -e '#####################\n'
+    echo -e '#####################'
     for iface in -eth0 -eth1
     do
       riface=$router$iface
@@ -40,7 +42,7 @@ test_p2p_connectivity() {
       fi
       echo $code $riface '->' ${test_array[$riface]}
     done
-    echo -e '\n\n'
+    echo -e '\n'
   done
 }
 

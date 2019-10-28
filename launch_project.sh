@@ -2,6 +2,13 @@ info () {
   echo -e "\n[INFO] $*"
 }
 
+known_hosts="/home/vagrant/.ssh/known_hosts"
+if [ -f $known_hosts ]
+then
+  info "Cleaning ssh known_hosts"
+  rm $known_hosts
+fi
+
 info "Setting up the workspace"
 ./setup_workspace.sh
 
@@ -14,7 +21,14 @@ sudo ./gen_conf.py
 info "Creating network"
 sudo ./create_network.sh isp4_topo
 
-sleep 1
+info "Launching ssh proxies"
+./setup_ssh_proxy.sh
 
-info "Launching tests"
-sudo ./test/test.sh
+if [ $1 -eq 1 ]
+then
+  info "Waiting 30 seconds for the network booting before launching the tests"
+  sleep 30
+  python3 test/test_main.py
+fi
+
+info "End of startup script"
