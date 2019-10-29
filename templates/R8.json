@@ -1,0 +1,9 @@
+{
+  "name": "R8",
+  "rnum": "8",
+  "eth0-subnet": "14",
+  "eth1-subnet": "22",
+  "eth2-subnet": "30",
+  "eth3-subnet": "32",
+  "n_iface": 4
+}
