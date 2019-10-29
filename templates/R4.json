@@ -1,7 +1,9 @@
 {
   "name": "R4",
   "rnum": "4",
-  "eth0-subnet": "7",
-  "eth1-subnet": "8",
-  "n_iface": 2
+  "eth0-subnet": "10",
+  "eth1-subnet": "20",
+  "eth2-subnet": "21",
+  "eth3-subnet": "23",
+  "n_iface": 4
 }

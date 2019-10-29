@@ -10,7 +10,7 @@ then
 fi
 
 
-routers=(R1 R2 R3 R4)
+routers=(R1 R2 R3 R4 R5 R6 R7 R8)
 for router in ${routers[@]}
 do
   rid=$(echo $router | sed -e 's/R//g')
