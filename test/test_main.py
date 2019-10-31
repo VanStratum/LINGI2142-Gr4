@@ -111,7 +111,6 @@ for test_name in sorted(tests.keys()):
         router_number = 1
         while(router_number <= nb_routers):
             router = "R%s"%router_number
-            print("\n")
             info("Executing test on router %s"%router)
             session = routers[router]['ssh']
             number_eth = 0
