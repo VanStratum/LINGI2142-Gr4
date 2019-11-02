@@ -5,9 +5,5 @@
   "eth1-subnet": "4",
   "eth2-subnet": "6",
   "eth3-subnet": "8",
-  "n_iface": 4,
-  "bgp_iface": "bgp_as64512",
-  "bgp_iface_ip": "fde4::4:cafe/64",
-  "bgp_self_as": "65004",
-  "bgp_up1_as": "64512"
+  "n_iface": 4
 }

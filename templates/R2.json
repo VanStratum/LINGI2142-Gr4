@@ -2,8 +2,8 @@
   "name": "R2",
   "rnum": "2",
   "eth0-subnet": "7",
-  "eth1-subnet": "9",
-  "eth2-subnet": "11",
-  "eth3-subnet": "13",
+  "eth1-subnet": "10",
+  "eth2-subnet": "12",
+  "eth3-subnet": "14",
   "n_iface": 4
 }
