@@ -24,8 +24,8 @@ LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/zebra -A 127.0.0.1 -f /etc/${data['n
 # launching FRRouting OSPF daemon
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/ospf6d -f /etc/${data['name']}_ospf.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_ospf6d.pid -A 127.0.0.1
 
-% if "bgp_iface" in data.keys():
-#  ip -6 addr add dev ${data['bgp_iface']} $data['bgp_iface_ip']}
-#  LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgp -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
+% if("bgp_iface" in data.keys()):
+   ip -6 addr add dev ${data['bgp_iface']} ${data['bgp_iface_ip']}
+   LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgp -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
 % endif
 
