@@ -3,5 +3,9 @@
   "rnum": "1",
   "eth0-subnet": "2",
   "eth1-subnet": "9",
-  "n_iface": 2
+  "n_iface": 2,
+  "bgp_iface": "bgp_as64512",
+  "bgp_iface_ip": "fde4::4:cafe/64",
+  "bgp_self_as": "65004",
+  "bgp_up1_as": "64512"
 }

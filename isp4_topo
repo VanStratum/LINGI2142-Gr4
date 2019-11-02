@@ -46,17 +46,15 @@ function mk_topo {
     # R4-eth1 links to R1-eth1
     add_link R4 R1
 
-
-
     #echo "@@ Adding LANs"
     # Create a new LAN (subnet), attached to BELNET, with 2 hosts: B1 and B2
     #mk_LAN BELNET B1 B2
     # Same but with 4 hosts in LLN
     #mk_LAN LLN L1 L2 L3 L4
 
-    #echo "@@ Briding the network"
+    echo "@@ Briding the network"
     # Connect BELNET to its two connectivity providers
-    #bridge_node BELNET eth5 grp2
+    bridge_node R1 eth1 bgp_as64512
     #bridge_node BELNET eth2 as300
 }
 
