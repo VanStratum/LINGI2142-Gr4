@@ -58,6 +58,12 @@
           "R1": [0, 0]
         }
       }
+    },
+    "0-link-failures": {
+      "type": "link-failure",
+      "sequences": [
+        {"routers": {"R1": [1, 0], "R2": [0, 0], "R3": [0, 0], "R4": [0, 0]}}
+      ]
     }
   }
 }
