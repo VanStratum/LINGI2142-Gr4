@@ -22,6 +22,7 @@ info "Creating network"
 sudo ./create_network.sh isp4_topo
 
 info "Launching ssh proxies"
+sudo chmod 600 id_rsa
 ./setup_ssh_proxy.sh
 
 if [ $1 -eq 1 ]

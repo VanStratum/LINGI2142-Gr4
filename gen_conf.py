@@ -44,6 +44,9 @@ for t in templates:
         elif 'zebra' in t:
             rp = '%s/%s_zebra.conf'%(name,name)
             exe = 0
+        elif 'bgpd' in t:
+            rp = '%s/%s_bgpd.conf'%(name,name)
+            exe = 0
         elif 'start' in t:
             rp = '%s_start'%name
             exe = 1
