@@ -1,0 +1,10 @@
+{
+	"name": "R10",
+      	"rnum": "10",
+    	"eth0-subnet": "35",
+  	"n_iface": 1,
+	"bgp_self_as":"65004",
+	"ibgp_iface":["R10-eth0"],
+	"ibgp_neighbor" : ["fde4:4:f000::34"]
+}
+
