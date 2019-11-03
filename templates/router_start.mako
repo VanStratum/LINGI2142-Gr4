@@ -24,11 +24,11 @@ LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/zebra -A 127.0.0.1 -f /etc/${data['n
 # launching FRRouting OSPF daemon
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/ospf6d -f /etc/${data['name']}_ospf.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_ospf6d.pid -A 127.0.0.1 &
 
-% if "bgp_iface" in data.keys():
+% if "bgp_iface" in data.keys() :
 #configuring the bgp interface
 ip link set dev ${data['bgp_iface']} up
 ip -6 addr add ${data['bgp_iface_ip']} dev ${data['bgp_iface']} 
 #lauching FRRouting BGP daemon
+%endif
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgpd -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
-% endif
 
