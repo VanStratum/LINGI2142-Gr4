@@ -19,13 +19,15 @@ bgp router-id 1.0.0.${data['rnum']}
  <% r = range(0,len(data['ibgp_iface'])) %>
   % for i in r:
 ! ibgp session with ${data['ibgp_neighbor'][i]} on interface ${data['ibgp_iface'][i]}
-    neighbor ${data['ibgp_neighbor'][i]} remote-as 65004
-    neighbor ${data['ibgp_neighbor'][i]} interface ${data['ibgp_iface'][i]}
-    neighbor ${data['ibgp_neighbor'][i]} activate
+  neighbor ${data['ibgp_neighbor'][i]} remote-as 65004
+  neighbor ${data['ibgp_neighbor'][i]} interface ${data['ibgp_iface'][i]}
+  neighbor ${data['ibgp_neighbor'][i]} activate
 % endfor
 % endif
+% if 'bgp_iface' in data.keys():
   address-family ipv6 unicast
     neighbor fde4::1 activate
     network fde4:4::/32
   exit-address-family
+% endif
 % endif
