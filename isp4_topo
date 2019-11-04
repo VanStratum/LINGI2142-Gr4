@@ -71,8 +71,10 @@ function mk_topo {
     add_link R8 R7
     # R9-eth0 links to R10-eth0
     add_link R9 R10
-    # R9-eth0 links to R10-eth0
+    # R9-eth0 links to R11-eth0
     add_link R9 R11
+    # R9-eth0 links to R1-eth4
+    add_link R9 R1
 
     #echo "@@ Adding LANs"
     # Create a new LAN (subnet), attached to BELNET, with 2 hosts: B1 and B2
