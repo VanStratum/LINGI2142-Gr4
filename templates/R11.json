@@ -1,0 +1,11 @@
+{
+	"name": "R11",
+      	"rnum": "11",
+    	"eth0-subnet": "37",
+  	"n_iface": 1,
+	"bgp_self_as": "65004",
+	"bgp_up1_as": "64512",
+	"ibgp_iface":["R11-eth0","R11-eth0"],
+	"ibgp_neighbor":["fde4:4:f000::36","fde4:4:f000::35"]
+}
+

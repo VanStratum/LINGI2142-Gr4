@@ -2,12 +2,13 @@
 	"name": "R9",
       	"rnum": "9",
     	"eth0-subnet": "34",
-  	"n_iface": 1,
+	"eth1-subnet":"36",
+  	"n_iface": 2,
 	"bgp_iface": "bgp_as64512",
 	"bgp_iface_ip": "fde4::4:cafe/64",
 	"bgp_self_as": "65004",
 	"bgp_up1_as": "64512",
-	"ibgp_iface":["R9-eth0"],
-	"ibgp_neighbor":["fde4:4:f000::35"]
+	"ibgp_iface":["R9-eth0","R9-eth1"],
+	"ibgp_neighbor":["fde4:4:f000::35","fde4:4:f000::37"]
 }
 
