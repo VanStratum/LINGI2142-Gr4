@@ -26,12 +26,12 @@ bgp router-id 1.0.0.${data['rnum']}
 ! ibgp session with fde4:4:f000:1::${data['ibgp_neighbor'][i]} 
   neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} remote-as 65004
 % endfor
-  address-family ipv6 unicast
   % for i in r:
+  address-family ipv6 unicast
   	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} activate
 	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} next-hop-self
 	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} update-source fde4:4:f000:1::${data['rnum']}
-  % endfor
   exit-address-family
+  % endfor
 % endif
 % endif
