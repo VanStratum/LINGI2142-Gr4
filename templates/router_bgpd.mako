@@ -12,8 +12,8 @@ router bgp ${data['bgp_self_as']}
 bgp router-id 1.0.0.${data['rnum']}
   no bgp default ipv4-unicast
 % if 'bgp_iface' in data.keys():
-  neighbor fde4::1 remote-as ${data['bgp_up1_as']}
-  neighbor fde4::1 interface ${data['bgp_iface']}
+  neighbor ${data['bgp_neighbor']} remote-as ${data['bgp_up1_as']}
+  neighbor ${data['bgp_neighbor']}  interface ${data['bgp_iface']}
 % endif
 % if 'ibgp_iface' in data.keys():
  <% r = range(0,len(data['ibgp_iface'])) %>
@@ -25,12 +25,13 @@ bgp router-id 1.0.0.${data['rnum']}
   address-family ipv6 unicast
   % for i in r:
   	neighbor ${data['ibgp_neighbor'][i]} activate
+	neighbor ${data['ibgp_neighbor'][i]} next-hop-self
   % endfor
   exit-address-family
 % endif
 % if 'bgp_iface' in data.keys():
   address-family ipv6 unicast
-    neighbor fde4::1 activate
+    neighbor ${data['bgp_neighbor']} activate
     network fde4:4::/32
   exit-address-family
 % endif

@@ -83,8 +83,9 @@ function mk_topo {
     #mk_LAN LLN L1 L2 L3 L4
 
     echo "@@ Briding the network"
-    # Connect BELNET to its two connectivity providers
+    # Connect R9 to thomAS on the eth1 of the vm
     bridge_node R9 eth1 bgp_as64512
-    #bridge_node BELNET eth2 as300
+    # Connect R11 to gr5 on the eth2 of the vm
+    bridge_node R11 eth2 bgp_as65005
 }
 

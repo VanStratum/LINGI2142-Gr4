@@ -7,6 +7,7 @@
   	"n_iface": 3,
 	"bgp_iface": "bgp_as64512",
 	"bgp_iface_ip": "fde4::4:cafe/64",
+	"bgp_neighbor":"fde4::1",
 	"bgp_self_as": "65004",
 	"bgp_up1_as": "64512",
 	"ibgp_iface":["R9-eth0","R9-eth1","R9-eth2"],
