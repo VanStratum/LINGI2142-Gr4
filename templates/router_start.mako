@@ -27,7 +27,7 @@ LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/ospf6d -f /etc/${data['name']}_ospf.
 % if "bgp_iface" in data.keys() :
 #configuring the bgp interface
 ip link set dev ${data['bgp_iface']} up
-ip -6 addr add ${data['bgp_iface_ip']} dev ${data['bgp_iface']} 
+ip -6 addr add ${data['bgp_iface_ip']}/64 dev ${data['bgp_iface']} 
 #lauching FRRouting BGP daemon
 %endif
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgpd -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
