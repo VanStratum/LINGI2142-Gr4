@@ -8,7 +8,6 @@
 	"bgp_self_as": "65004",
 	"bgp_up1_as": "65005",
 	"bgp_neighbor":"fde4::5:babe",
-	"ibgp_iface":["R11-eth0","R11-eth0"],
-	"ibgp_neighbor":["fde4:4:f000::36","fde4:4:f000::35"]
+	"ibgp_neighbor":["9","10"]
 }
 

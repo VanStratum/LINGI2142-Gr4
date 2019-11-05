@@ -1,4 +1,4 @@
-% if 'bgp_iface' in data.keys() or 'ibgp_iface' in data.keys():
+% if 'bgp_iface' in data.keys() or 'ibgp_neighbor' in data.keys():
 !
 ! BGP conf file for ${data['name']}
 !
@@ -20,17 +20,17 @@ bgp router-id 1.0.0.${data['rnum']}
     network fde4:4::/32
   exit-address-family
 % endif
-% if 'ibgp_iface' in data.keys():
- <% r = range(0,len(data['ibgp_iface'])) %>
+% if 'ibgp_neighbor' in data.keys():
+ <% r = range(0,len(data['ibgp_neighbor'])) %>
   % for i in r:
-! ibgp session with ${data['ibgp_neighbor'][i]} on interface ${data['ibgp_iface'][i]}
-  neighbor ${data['ibgp_neighbor'][i]} remote-as 65004
-  neighbor ${data['ibgp_neighbor'][i]} interface ${data['ibgp_iface'][i]}
+! ibgp session with fde4:4:f000:1::${data['ibgp_neighbor'][i]} 
+  neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} remote-as 65004
 % endfor
   address-family ipv6 unicast
   % for i in r:
-  	neighbor ${data['ibgp_neighbor'][i]} activate
-	neighbor ${data['ibgp_neighbor'][i]} next-hop-self
+  	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} activate
+	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} next-hop-self
+	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} update-source fde4:4:f000:1::${data['rnum']}
   % endfor
   exit-address-family
 % endif
