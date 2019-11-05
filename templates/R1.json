@@ -8,5 +8,6 @@
   "eth4-subnet":"39",
   "n_iface": 5,
   "bgp_self_as":"65004",
-  "ibgp_neighbor": ["9"]
+  "ibgp_neighbor": ["9"],
+  "RouteReflector_client":["2"]
 }
