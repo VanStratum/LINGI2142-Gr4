@@ -9,9 +9,9 @@ then
   pkill ncat
 fi
 
-for i in {1..8}
+for i in {01..12}
 do
   router="R$i"
-  ncat --keep-open --sh-exec "exec sudo ip netns exec $router nc localhost 22" -l 222$i &
+  ncat --keep-open --sh-exec "exec sudo ip netns exec $router nc localhost 22" -l 22$i &
   info "Proxy for $router launched."
 done
