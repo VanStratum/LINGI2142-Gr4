@@ -73,7 +73,7 @@ function mk_topo {
     add_link R09 R10
     # R9-eth1 links to R11-eth0
     add_link R09 R11
-    # R9-eth2 links to R11-eth4
+    # R9-eth2 links to R01-eth4
     add_link R09 R01
 
     #echo "@@ Adding LANs"
@@ -84,7 +84,7 @@ function mk_topo {
 
     echo "@@ Briding the network"
     # Connect R9 to thomAS on the eth1 of the vm
-    bridge_node R9 eth1 bgp_as64512
+    bridge_node R09 eth1 bgp_as64512
     # Connect R11 to gr5 on the eth2 of the vm
     bridge_node R11 eth2 bgp_as65005
 }
