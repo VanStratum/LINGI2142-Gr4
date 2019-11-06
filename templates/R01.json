@@ -1,0 +1,13 @@
+{
+  "name": "R01",
+  "rnum": "1",
+  "eth0-subnet": "2",
+  "eth1-subnet": "4",
+  "eth2-subnet": "6",
+  "eth3-subnet": "8",
+  "eth4-subnet":"39",
+  "n_iface": 5,
+  "bgp_self_as":"65004",
+  "ibgp_neighbor": ["9"],
+  "RouteReflector_client":["2"]
+}

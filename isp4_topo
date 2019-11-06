@@ -38,39 +38,39 @@ function mk_topo {
     # <node name>-eth<count>, where count starts at 0 and is increased by 1
     # after each new interface
     # R1-eth0 links to R3-eth0
-    add_link R1 R3
+    add_link R01 R03
     # R1-eth1 links to R5-eth0
-    add_link R1 R5
+    add_link R01 R05
     # R1-eth2 links to R2-eth0
-    add_link R1 R2
+    add_link R01 R02
     # R1-eth3 links to R7-eth0
-    add_link R1 R7
+    add_link R01 R07
     # R2-eth1 links to R4-eth0
-    add_link R2 R4
+    add_link R02 R04
     # R2-eth2 links to R6-eth0
-    add_link R2 R6
+    add_link R02 R06
     # R2-eth3 links to R8-eth0
-    add_link R2 R8
+    add_link R02 R08
     # R3-eth1 links to R7-eth1
-    add_link R3 R7
+    add_link R03 R07
     # R3-eth2 links to R5-eth1
-    add_link R3 R5
+    add_link R03 R05
     # R3-eth3 links to R4-eth1
-    add_link R3 R4
+    add_link R03 R04
     # R4-eth2 links to R8-eth1
-    add_link R4 R8
+    add_link R04 R08
     # R4-eth3 links to R6-eth1
-    add_link R4 R6
+    add_link R04 R06
     # R5-eth2 links to R7-eth2
-    add_link R5 R7
+    add_link R05 R07
     # R5-eth3 links to R6-eth2
-    add_link R5 R6
+    add_link R05 R06
     # R6-eth3 links to R8-eth2
-    add_link R6 R8
+    add_link R06 R08
     # R8-eth3 links to R7-eth3
-    add_link R8 R7
+    add_link R08 R07
     # R9-eth0 links to R10-eth0
-    add_link R9 R10
+    add_link R09 R10
 
     #echo "@@ Adding LANs"
     # Create a new LAN (subnet), attached to BELNET, with 2 hosts: B1 and B2
@@ -80,7 +80,7 @@ function mk_topo {
 
     echo "@@ Briding the network"
     # Connect BELNET to its two connectivity providers
-    bridge_node R9 eth1 bgp_as64512
+    bridge_node R09 eth1 bgp_as64512
     #bridge_node BELNET eth2 as300
 }
 

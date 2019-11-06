@@ -1,0 +1,15 @@
+{
+	"name": "R09",
+      	"rnum": "9",
+    	"eth0-subnet": "34",
+	"eth1-subnet":"36",
+	"eth2-subnet":"38",
+  	"n_iface": 3,
+	"bgp_iface": "bgp_as64512",
+	"bgp_iface_ip": "fde4::4:cafe",
+	"bgp_neighbor":"fde4::1",
+	"bgp_self_as": "65004",
+	"bgp_up1_as": "64512",
+	"ibgp_neighbor":["1","11","10"]
+}
+
