@@ -8,6 +8,6 @@
 	"bgp_self_as": "65004",
 	"bgp_up1_as": "65005",
 	"bgp_neighbor":"fde4::5:babe",
-	"ibgp_neighbor":["9","10"]
+	"ibgp_neighbor":["9","10","1","4"]
 }
 

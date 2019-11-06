@@ -5,5 +5,7 @@
   "eth1-subnet": "19",
   "eth2-subnet": "26",
   "eth3-subnet": "28",
-  "n_iface": 4
+  "n_iface": 4,
+  "bgp_self_as":"65004",
+  "ibgp_neighbor": ["9","10"]
 }

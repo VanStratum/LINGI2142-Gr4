@@ -10,6 +10,6 @@
 	"bgp_neighbor":"fde4::1",
 	"bgp_self_as": "65004",
 	"bgp_up1_as": "64512",
-	"ibgp_neighbor":["1","11","10"]
+	"ibgp_neighbor":["1","11","10","5"]
 }
 

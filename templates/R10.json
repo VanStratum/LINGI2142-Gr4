@@ -4,6 +4,6 @@
     	"eth0-subnet": "35",
   	"n_iface": 1,
 	"bgp_self_as":"65004",
-	"ibgp_neighbor" : ["11","9"]
+	"ibgp_neighbor" : ["11","9","5","4"]
 }
 
