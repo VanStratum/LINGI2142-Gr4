@@ -46,14 +46,14 @@ bgp router-id 1.0.0.${data['rnum']}
   exit-address-family
 % endif
 % if 'ibgp_neighbor' in data.keys():
- <% r = range(0,len(data['ibgp_neighbor'])) %>
-  % for i in r:
-! ibgp session with fde4:4:f000:1::${data['ibgp_neighbor'][i]} 
-  neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} remote-as 65004
+ <% neighbor = data['ibgp_neighbor'] %>
+  % for n in neighbor:
+! ibgp session with fde4:4:f000:1::${n} 
+  neighbor fde4:4:f000:1::${n} remote-as 65004
   address-family ipv6 unicast
-  	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} activate
-	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} next-hop-self
-	neighbor fde4:4:f000:1::${data['ibgp_neighbor'][i]} update-source fde4:4:f000:1::${data['rnum']}
+  	neighbor fde4:4:f000:1::${n} activate
+	neighbor fde4:4:f000:1::${n} next-hop-self
+	neighbor fde4:4:f000:1::${n} update-source fde4:4:f000:1::${data['rnum']}
   exit-address-family
 % endfor
 %endif
