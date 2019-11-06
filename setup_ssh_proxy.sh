@@ -9,11 +9,9 @@ then
   pkill ncat
 fi
 
-
-routers=(R1 R2 R3 R4)
-for router in ${routers[@]}
+for i in {1..8}
 do
-  rid=$(echo $router | sed -e 's/R//g')
-  ncat --keep-open --sh-exec "exec sudo ip netns exec $router nc localhost 22" -l 222$rid &
+  router="R$i"
+  ncat --keep-open --sh-exec "exec sudo ip netns exec $router nc localhost 22" -l 222$i &
   info "Proxy for $router launched."
 done
