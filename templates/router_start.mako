@@ -20,7 +20,7 @@ ip -6 addr add fde4:4:f000::${subnet}/127 dev ${dev}
 
 # zebra is required to make the link between all FRRouting daemons
 # and the linux kernel routing table
-LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/zebra -A 127.0.0.1 -f /etc/${data['name']}_zebra.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_zebra.pid &
+LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/zebra -A 127.0.0.1 -f /etc/${data['name']}_zebra.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_zebra.pid --v6-rr-semantics &
 # launching FRRouting OSPF daemon
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/ospf6d -f /etc/${data['name']}_ospf.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_ospf6d.pid -A 127.0.0.1 &
 
@@ -31,4 +31,5 @@ ip -6 addr add ${data['bgp_iface_ip']}/64 dev ${data['bgp_iface']}
 #lauching FRRouting BGP daemon
 %endif
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgpd -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
-
+# Launching nftables firewall
+LD_LIBRARY_PATH=/usr/local/lib nft -f /etc/${data['name']}_nftables.conf
