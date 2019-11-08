@@ -12,7 +12,7 @@ ip -6 addr add fde4:4:f000:1::${data['rnum']}/128 dev lo
     iface = 'eth%s'%str(i) 
     key = '%s-subnet'%iface
     dev = '%s-%s'%(data['name'],iface)
-    subnet = data[key] 
+    subnet = data[key][0] 
 %> 
 ip link set dev ${dev} up
 ip -6 addr add fde4:4:f000::${subnet}/127 dev ${dev}

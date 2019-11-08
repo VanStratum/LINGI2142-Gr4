@@ -15,6 +15,7 @@ interface ${data['name']}-eth${iface}
   ipv6 ospf6 hello-interval 10
   ipv6 ospf6 dead-interval 40
   ipv6 ospf6 instance-id 0
+  ipv6 ospf6 network point-to-point
 !
 % endfor
 interface lo

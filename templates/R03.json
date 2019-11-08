@@ -1,9 +1,9 @@
 {
   "name": "R03",
   "rnum": "3",
-  "eth0-subnet": "3",
-  "eth1-subnet": "16",
-  "eth2-subnet": "18",
-  "eth3-subnet": "20",
+  "eth0-subnet": ["3", "2"],
+  "eth1-subnet": ["10", "11"],
+  "eth2-subnet": ["12", "13"],
+  "eth3-subnet": ["14", "15"],
   "n_iface": 4
 }
