@@ -1,9 +1,10 @@
 {
   "name": "R06",
   "rnum": "6",
-  "eth0-subnet": "13",
-  "eth1-subnet": "25",
-  "eth2-subnet": "29",
-  "eth3-subnet": "30",
-  "n_iface": 4
+  "ifaces": [
+    ["d", "c"],
+    ["19", "18"],
+    ["1d", "1c"],
+    ["1e", "1f"]
+  ]
 }
