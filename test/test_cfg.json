@@ -2,35 +2,35 @@
   "nb_routers":8,
   "routers": {
     "R1": {
-      "port": "2221",
+      "port": "2201",
       "nb_iface":4
     },
     "R2": {
-      "port": "2222",
+      "port": "2202",
       "nb_iface":4
     },
     "R3": {
-      "port": "2223",
+      "port": "2203",
       "nb_iface":4
     },
     "R4": {
-      "port": "2224",
+      "port": "2204",
       "nb_iface":4
     },
     "R5": {
-      "port":"2225",
+      "port":"2205",
       "nb_iface":4
     },
     "R6": {
-      "port":"2226",
+      "port":"2206",
       "nb_iface":4
     },
     "R7": {
-      "port":"2227",
+      "port":"2207",
       "nb_iface":4
     },
     "R8": {
-      "port":"2228",
+      "port":"2208",
       "nb_iface":4
     }
   },
