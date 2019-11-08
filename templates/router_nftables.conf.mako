@@ -1,6 +1,11 @@
 #! /usr/local/sbin/nft -f
 
 # flush ruleset
+# icmpv6  = 58
+# bgp     = 179
+# ospfv3  = 89
+
+<% bgp = 'bgp' in data.keys() %>
 
 table inet filter {
 
@@ -14,22 +19,18 @@ table inet filter {
 
     # accepting ssh traffic from R0
     tcp dport 22 ip6 saddr fde4:4:f000:1::5 accept
-    
-    <% r = range(0, data['n_iface']) %>
-    % for i in r:
-      <%
-        iface = '%s-eth%s' % (data['name'], i) 
-        ip = 'fde4:4:f000:1::%s' % data['eth%s-subnet' % i] 
-      %>
-    # accept ospfv3
-		iifname ${iface} ip6 daddr ${ip} ip6 nexthdr 89 counter accept
+    % for iface in data['ifaces']:
+    <%
+      dev = '%s-eth%s' % (data['name'], loop.index) 
+      ip = 'fde4:4:f000::%s' % iface[1] 
+    %>
+	  iifname ${dev} ip6 nexthdr 89 counter accept
+    % if bgp:
+    iifname ${dev} tcp dport 179 counter accept
+    % endif
     % endfor
     
-    # accept icmpv6
 		ip6 nexthdr 58 accept
-    
-    # accept bgp
-    tcp dport 179 accept
 	}
 
   chain forward {

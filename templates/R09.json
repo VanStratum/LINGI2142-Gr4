@@ -1,15 +1,22 @@
 {
 	"name": "R09",
   "rnum": "9",
-  "eth0-subnet": ["22", "23"],
-	"eth1-subnet": ["24", "25"],
-	"eth2-subnet": ["26", "27"],
-  "n_iface": 3,
-	"bgp_iface": "bgp_as64512",
-	"bgp_iface_ip": "fde4::4:cafe",
-	"bgp_neighbor":"fde4::1",
-	"bgp_self_as": "65004",
-	"bgp_up1_as": "64512",
-	"ibgp_neighbor":["1","11","10"]
+  "ifaces": [
+    ["22", "23"],
+	  ["24", "25"],
+	  ["26", "27"]
+  ],
+  "bgp": {
+	  "self_as":    "65004",
+    "e": {
+	    "ifaces":     ["bgp_as64512"],
+	    "iface_ip":   ["fde4::4:cafe"],
+	    "neighbors":  ["fde4::1"],
+	    "up1_as":     ["64512"]
+    },
+    "i": {
+	    "neighbors":  ["1","11","10"]
+    }
+  }
 }
 
