@@ -56,7 +56,6 @@ for t in templates:
 
         out = '%s%s'%(CONFIG_DIR,rp)
 
-        #print('in: %s'%inf)
         print('%s generated'%out)
         generate_config(inf, '%s%s'%(TEMPLATES_DIR,t), out)
         if exe:

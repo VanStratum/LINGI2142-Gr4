@@ -14,10 +14,9 @@ interface lo
 interface lo1
  description lo1.
 !
-<% r = range(0,data['n_iface']) %>
-% for i in r:
-<% name = 'eth%s-subnet'%i %>
-interface ${data['name']}-eth${i}
- description Link to R${data[name]}
+% for iface in data['ifaces']:
+<% dev = '%s-eth%s' % (data['name'], loop.index) %>
+interface ${dev}
+ description Link to ${dev}
 !
 % endfor
