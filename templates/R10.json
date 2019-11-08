@@ -6,6 +6,12 @@
   ],
   "bgp": {
 	  "self_as":"65004",
+	"e":{
+		"ifaces": ["bgp_as65001"],
+		"iface_ip": ["fde4::4:babe"],
+		"neighbors":["fde4::1:babe"],
+		"up1_as":["65001"]
+	},
     "i": {
 	    "neighbors" : ["11","9"]
     },
