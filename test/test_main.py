@@ -4,6 +4,7 @@ import sys
 import getpass
 import json
 from re import sub
+import time
 
 errors = 0
 
@@ -24,7 +25,7 @@ def Send_cmd(iface,addr_liste,cmd,session):
 
         """ Clean session returned value in order to parse json """
         v = sub(final_cmd, '', value)
-        if 'unreachable' not in v:
+        if 'unreachable' not in v: #needs improvements because only an invalid address does this
             status = 'OK'
             #js = json.loads(v)
             # print(js['report']['hubs'])
@@ -48,77 +49,41 @@ def get_ssh_to(router_port):
         print(e)
         return None
 
-
-def execute_command(session, cmd):
-    """ Execute command (cmd) on SSH session (session) with given (args) """
-    session.sendline(cmd)
-    session.prompt()
-
-    """ Redirect stdout to var in order to parse the json string """
-    old_stdout = sys.stdout
-    result = StringIO()
-    sys.stdout = result
-    print(session.before.decode('utf-8'))
-    value = result.getvalue()
-    sys.stdout = old_stdout
-
-    """ Clean session returned value in order to parse json """
-    return sub(cmd, '', value)
-
-
-def router_connectivity_test(session, iface, addr_list):
+def test_full_connectivity(test_data):
+    test_address = test_data['Ip_addresses']
     errors = 0
-    cmd = 'mtr -6 -c1 --json -o D -I %s %s'
-    for addr in addr_list:
-        v = execute_command(session, cmd % (iface, addr))
-        if 'unreachable' not in v:
-            status = 'OK'
-            #js = json.loads(v)
-            # print(js['report']['hubs'])
-        else:
-            errors += 1
-            status = 'ERROR'
-
-        print('%s: %s -> %s'%(status,iface, addr))
+    cmd = 'mtr -6 -c1 --json -o D -I'
+    for router in routers.keys():
+        info("Executing test on router %s"%router)
+        session = routers[router]['ssh']
+        for number_eth in range(0, routers[router]['nb_iface']-1):
+            iface = '%s-eth%s'%(router,number_eth)
+            errors += Send_cmd(iface,test_address,cmd,session)
+    info('Test 2-full_connectivity ended with %s error(s).\n' %(errors))
     return errors
 
-
-def link_failure_setup(session, iface, is_down):
-    cmd = 'ip link set dev %s down'
-    if is_down:
-        execute_command(session, cmd % iface)
-        # TODO : parse returned value
-        info('iface %s down.' % iface)
-    return 0
-
-
-def get_test_fun(test_type):
-    if test_type == 'connectivity':
-        return router_connectivity_test
-    elif test_type == 'link-failure':
-        return link_failure_setup
-    else:
-        return None
-
-
-def execute_router(router, router_data, test_type):
-    session = routers[router]['ssh']
+def test_neighbour(test_data):
     errors = 0
-    for idx, item in enumerate(router_data):
-        """ 
-        if connectivity, item = list of addresses to reach
-        if link-failure, item = 1 if interface to down, 0 otherwise
-        """  
-        iface = '%s-eth%s'%(router, idx)
-        test_fun = get_test_fun(test_type)
-        if test_fun is None:
-            return None
-        errors += test_fun(session, iface, item)
+    cmd = 'mtr -6 -c1 --json -o D -I'
+    for router in test_data['routers'].keys():
+        info('Testing node %s'%router)
+        session = routers[router]['ssh']
+        test_data_router = test_data['routers'][router]
+        for idx, addr_list in enumerate(test_data_router):
+            iface = '%s-eth%s'%(router, idx)
+            errors += Send_cmd(iface,addr_list,cmd,session)
+    info('Test 1-neighbours ended with %s error(s).\n' %(errors))
     return errors
-        
+
+def down_iface(data):
+    info('Shutting interfaces down')
+    for router in data.keys():
+        for iface in data[router]:
+            session = routers[router]['ssh']
+            cmd = 'ip link set ' + iface + ' down'
+            session.sendline(cmd)
 
 info('Launching tests')
-
 
 """ Load tests configuration """
 config = None
@@ -145,78 +110,16 @@ for router in routers.keys():
 
 info('Begin testing procedure.\n')
 
-def execute_test(test_name, test_data):
-    def on_each_router(data):
-        errors = 0
-        for router in data['routers'].keys():
-            info('Testing node %s'%router)
-            session = routers[router]['ssh']
-            router_data = data['routers'][router]
-            errors += execute_router(router, router_data, test_data['type'])
-        return errors
-
-    info("Executing %s test"%test_name)
-    test_errors = 0
-
-    if test_data['type'] == 'link-failure':
-        for data in test_data['sequences']:
-            test_errors += on_each_router(data)
-            # TODO : add repair function
-            full_co = '2-full_connectivity'
-            test_errors = execute_test(full_co, config['tests'][full_co])
-            execute_command(session, 'ip link set dev %s up' % iface)
-            addr = 'fde4:4:f000::2/127'
-            execute_command(session, 'ip addr add dev %s %s' % (iface, addr))
-    else:
-        test_errors += on_each_router(test_data)
-
-    test_data = tests[test_name]
-    
-    """ Defining which command to send to the router """
-    test_type = test_data['type']
-    cmd = None
-    if test_type == 'connectivity':
-        cmd = 'mtr -6 -c1 --json -o D -I'
-    
-    """ Skip the current test if no recognized cmd """
-    if cmd is None:
-        continue
-
-    if(test_name == '1-neighbours'):
-        for router in test_data['routers'].keys():
-            info('Testing node %s'%router)
-            session = routers[router]['ssh']
-            test_data_router = test_data['routers'][router]
-            
-            for idx, addr_list in enumerate(test_data_router):
-                iface = '%s-eth%s'%(router, idx)
-                test_errors += Send_cmd(iface,addr_list,cmd,session)
-        info('Test %s ended with %s error(s).\n' %(test_name, test_errors))
-        errors += test_errors
-
-    if(test_name == "2-full_connectivity"):
-        test_address = test_data['Ip_addresses']
-        router_number = 1
-        while(router_number <= nb_routers):
-            router = "R%s"%router_number
-            info("Executing test on router %s"%router)
-            session = routers[router]['ssh']
-            number_eth = 0
-            while(number_eth < nbIfaceEachRouter[router_number-1]):
-                iface = '%s-eth%s'%(router,number_eth)
-                test_errors += Send_cmd(iface,test_address,cmd,session)
-                number_eth += 1
-            router_number += 1
-        info('Test %s ended with %s error(s).\n' %(test_name, test_errors))
-        errors += test_errors
 
 tests = config['tests']
+setup = config['setup']
 errors = 0
-for test_name in sorted(tests.keys()):
-    """ iterate on all the defined tests """
-    test_data = tests[test_name]
-    errors += execute_test(test_name, test_data)
-    
+errors += test_neighbour(tests['1-neighbours'])
+errors += test_full_connectivity(tests['2-full_connectivity'])
+down_iface(setup['down-1-iface'])
+time.sleep(30)
+errors += test_full_connectivity(tests['2-full_connectivity'])
+
 info('All tests done with %s error(s).\n' % str(errors))
 
 """ Closing all SSH sessions """
