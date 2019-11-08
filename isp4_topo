@@ -88,7 +88,7 @@ function mk_topo {
     bridge_node R09 eth1 bgp_as64512
     # Connect R11 to gr5 on the eth2 of the vm
     bridge_node R11 eth2 bgp_as65005
-
-
+    #connect R10 to gr1 for a test but could be change to connect to groupe 3
+    bridge_node R10 eth3 bgp_as65001
 }
 

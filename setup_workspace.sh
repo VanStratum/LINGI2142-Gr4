@@ -7,7 +7,7 @@ SCRIPT_DIR='.'
 declare -A SCRIPTS=( 
   ['create_network.sh']='2d34f3e444e2e8723babfe407891efbf070ac77c'
   ['connect_to.sh']='6afdaca013f46a037b00567a8a669dfb675d3fd5' 
-  ['cleanup.sh']='23ab7f7d896e5d08edf3c0e49b06d9ff350ce267'
+  ['cleanup.sh']='9f087d6163054cfc24f7c0557bb9b1712d0b3619'
   ['_node_utils.sh']='f92c0ab697fd5e34a75dd3b726b041ee7d6dc418'
   ['templating_example/make_router_conf.py']='7de54bfeac4c7b673bfe04786d3bb8cd902e9358'
 )

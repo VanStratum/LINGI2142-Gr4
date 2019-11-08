@@ -72,8 +72,8 @@ bgp router-id 1.0.0.${data['rnum']}
   address-family ipv6 unicast
 	neighbor fde4:4:f000:1::${c} activate
 	neighbor fde4:4:f000:1::${c} next-hop-self
-	neighbor fde4:4:f000:1::${c} update-source fde4:4:f000:1::${data['rnum']}
 	neighbor fde4:4:f000:1::${c} route-reflector-client
+	neighbor fde4:4:f000:1::${c} update-source fde4:4:f000:1::${data['rnum']}
   exit-address-family
 % endfor
 % endif

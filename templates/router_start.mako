@@ -34,9 +34,7 @@ ip -6 addr add ${ebgp['iface_ip'][loop.index]}/64 dev ${iface}
 % endif
 #lauching FRRouting BGP daemon
 LD_LIBRARY_PATH=/usr/local/lib /usr/lib/frr/bgpd -f /etc/${data['name']}_bgpd.conf -z /tmp/${data['name']}.api -i /tmp/${data['name']}_bgpd.pid -A 127.0.0.1 &
-
 % endif
-
 
 # Launching nftables firewall
 LD_LIBRARY_PATH=/usr/local/lib nft -f /etc/${data['name']}_nftables.conf

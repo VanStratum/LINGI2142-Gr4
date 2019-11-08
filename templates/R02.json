@@ -10,7 +10,7 @@
   "bgp": {
     "self_as": "65004",
     "i": {
-      "neighbors": ["1"]
+      "neighbors": ["1","4"]
     }
   }
 }
