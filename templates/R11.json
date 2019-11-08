@@ -1,13 +1,20 @@
 {
 	"name": "R11",
-      	"rnum": "11",
-    	"eth0-subnet": "37",
-  	"n_iface": 1,
-	"bgp_iface":"bgp_as65005",
-	"bgp_iface_ip":"fde4::4:beef",
-	"bgp_self_as": "65004",
-	"bgp_up1_as": "65005",
-	"bgp_neighbor":"fde4::5:babe",
-	"ibgp_neighbor":["9","10","1","4"]
+  "rnum": "11",
+  "ifaces": [
+    ["25", "24"]
+  ],
+  "bgp": {
+	  "self_as": "65004",
+    "e": {
+      "ifaces":     ["bgp_as65005"],
+      "iface_ip":   ["fde4::4:beef"],
+	    "neighbors":   ["fde4::5:babe"],
+	    "up1_as":     ["65005"]
+    },
+    "i": {
+      "neighbors":  ["9","10"]
+    },
+    "rr_clients":["1","4"]
+  }
 }
-

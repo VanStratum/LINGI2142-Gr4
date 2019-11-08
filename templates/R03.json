@@ -1,9 +1,16 @@
 {
   "name": "R03",
   "rnum": "3",
-  "eth0-subnet": "3",
-  "eth1-subnet": "16",
-  "eth2-subnet": "18",
-  "eth3-subnet": "20",
-  "n_iface": 4
+  "ifaces": [
+    ["3", "2"],
+    ["10", "11"],
+    ["12", "13"],
+    ["14", "15"]
+  ],
+  "bgp":{
+	  "self_as":"65004",
+	  "i": {
+		  "neighbors":["1","4"]
+	  }
+  }
 }

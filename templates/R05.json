@@ -1,11 +1,17 @@
 {
   "name": "R05",
   "rnum": "5",
-  "eth0-subnet": "5",
-  "eth1-subnet": "19",
-  "eth2-subnet": "26",
-  "eth3-subnet": "28",
-  "n_iface": 4,
-  "bgp_self_as":"65004",
-  "ibgp_neighbor": ["9","10"]
+  "ifaces": [
+    ["5", "4"],
+    ["13", "12"],
+    ["1a", "1b"],
+    ["1c", "1d"]
+  ],
+  "bgp":{
+	  "self_as":"65004",
+	  "i" :{
+		  "neighbors":["9","10"]
+	  },
+	  "rr_clients":["7","8","6"]
+  }
 }

@@ -23,7 +23,8 @@ if the routeur make ibgp session the following attribute are mandatory:
 if the routeur is a route reflector the following attribute are mandatory:
 	9] RouteReflector_client: a list of all the client
 </%doc>
-% if 'bgp_iface' in data.keys() or 'ibgp_neighbor' in data.keys():
+% if 'bgp' in data.keys():
+  <% bgp = data['bgp'] %>
 !
 ! BGP conf file for ${data['name']}
 !
@@ -33,21 +34,28 @@ service advanced-vty
 ! log stdout
 debug 
 !
-router bgp ${data['bgp_self_as']}
+router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
   no bgp default ipv4-unicast
-% if 'bgp_iface' in data.keys():
-! ebgp session with ${data['bgp_neighbor']} on interface ${data['bgp_iface']}
-  neighbor ${data['bgp_neighbor']} remote-as ${data['bgp_up1_as']}
-  neighbor ${data['bgp_neighbor']} interface ${data['bgp_iface']}
+% if 'e' in bgp.keys():
+  <% ebgp = bgp['e'] %>
+% for iface in ebgp['ifaces']:
+  <% 
+    neighbor = ebgp['neighbors'][loop.index] 
+    up1_as = ebgp['up1_as'][loop.index]
+  %>
+! ebgp session with ${neighbor} on interface ${iface}
+  neighbor ${neighbor} remote-as ${up1_as}
+  neighbor ${neighbor} interface ${iface}
   address-family ipv6 unicast
-    neighbor ${data['bgp_neighbor']} activate
+    neighbor ${neighbor} activate
     network fde4:4::/32
   exit-address-family
+% endfor
 % endif
-% if 'ibgp_neighbor' in data.keys():
- <% neighbor = data['ibgp_neighbor'] %>
-  % for n in neighbor:
+% if 'i' in bgp.keys():
+  <% ibgp = bgp['i'] %>
+  % for n in ibgp['neighbors']:
 ! ibgp session with fde4:4:f000:1::${n} 
   neighbor fde4:4:f000:1::${n} remote-as 65004
   address-family ipv6 unicast
@@ -57,9 +65,8 @@ bgp router-id 1.0.0.${data['rnum']}
   exit-address-family
 % endfor
 %endif
-% if 'RouteReflector_client' in data.keys():
-<% client = data['RouteReflector_client'] %>
-% for c in client:
+% if 'rr_clients' in bgp.keys():
+% for c in bgp['rr_clients']:
 ! Route reflector client : fde4:4:f000:1::${c}
   neighbor fde4:4:f000:1::${c} remote-as 65004
   address-family ipv6 unicast
