@@ -18,8 +18,8 @@ table inet filter {
 		iif "lo" accept
 
     # accepting ssh traffic from R0
-    tcp dport 22 ip6 saddr fde4:4:f000:1::5 accept
-    % for iface in data['ifaces']:
+    tcp dport 22 ip6 saddr fde4:4:f000:22::1 accept
+    % for iface in data['ifaces']['routing']:
     <%
       dev = '%s-eth%s' % (data['name'], loop.index) 
       ip = 'fde4:4:f000::%s' % iface[1] 
