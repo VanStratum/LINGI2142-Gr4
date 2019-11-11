@@ -11,24 +11,13 @@ errors = 0
 def Send_cmd(iface,addr_liste,cmd,session):
    nombre_erreurs = 0
    for addresse in addr_liste:
-        final_cmd = '%s %s %s' % (cmd,iface,addresse)
+        final_cmd = '%s %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (cmd,iface,addresse)
         session.sendline(final_cmd)
+
         session.prompt()
-
-        """ Redirect stdout to var in order to parse the json string """
-        old_stdout = sys.stdout
-        result = StringIO()
-        sys.stdout = result
-        #print(session.before.decode('utf-8'))
-        value = result.getvalue()
-        sys.stdout = old_stdout
-
-        """ Clean session returned value in order to parse json """
-        v = sub(final_cmd, '', value)
-        if 'unreachable' not in v: #needs improvements because only an invalid address does this
+        temp = session.before.decode('utf-8')
+        if temp[-4:-2] == 'OK':
             status = 'OK'
-            #js = json.loads(v)
-            # print(js['report']['hubs'])
         else:
             nombre_erreurs += 1
             status = 'ERROR'
@@ -52,7 +41,7 @@ def get_ssh_to(router_port):
 def test_full_connectivity(test_data):
     test_address = test_data['Ip_addresses']
     errors = 0
-    cmd = 'mtr -6 -c1 --json -o D -I'
+    cmd = 'ping6 -c1 -I'
     for router in routers.keys():
         info("Executing test on router %s"%router)
         session = routers[router]['ssh']
@@ -64,7 +53,7 @@ def test_full_connectivity(test_data):
 
 def test_neighbour(test_data):
     errors = 0
-    cmd = 'mtr -6 -c1 --json -o D -I'
+    cmd = 'ping6 -c1 -I'
     for router in test_data['routers'].keys():
         info('Testing node %s'%router)
         session = routers[router]['ssh']
@@ -116,9 +105,9 @@ setup = config['setup']
 errors = 0
 errors += test_neighbour(tests['1-neighbours'])
 errors += test_full_connectivity(tests['2-full_connectivity'])
-down_iface(setup['down-1-iface'])
-time.sleep(30)
-errors += test_full_connectivity(tests['2-full_connectivity'])
+#down_iface(setup['down-1-iface'])
+#time.sleep(30)
+#errors += test_full_connectivity(tests['2-full_connectivity'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
