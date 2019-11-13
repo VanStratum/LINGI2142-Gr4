@@ -45,7 +45,7 @@ def test_full_connectivity(test_data):
     for router in routers.keys():
         info("Executing test on router %s"%router)
         session = routers[router]['ssh']
-        for number_eth in range(0, routers[router]['nb_iface']-1):
+        for number_eth in range(0, routers[router]['nb_iface']):
             iface = '%s-eth%s'%(router,number_eth)
             errors += Send_cmd(iface,test_address,cmd,session)
     info('Test 2-full_connectivity ended with %s error(s).\n' %(errors))
