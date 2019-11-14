@@ -4,7 +4,8 @@
 
 ldconfig
 
-ip -6 addr add fde4:4:f000:1::${data['rnum']}/128 dev lo
+<% loopback_addr = 'fde4:4:f000:1::%x' % int(data['rnum']) %>
+ip -6 addr add ${loopback_addr}/128 dev lo
 
 <% generic_iface = '%s-eth' % data['name'] %>
 % for iface in data['ifaces']: 
