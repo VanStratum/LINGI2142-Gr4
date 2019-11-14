@@ -3,7 +3,9 @@
 sysctl -w net.ipv6.conf.all.forwarding=1
 sysctl -w net.ipv6.conf.default.forwarding=1
 
-mkdir /etc/ssh
+if [ ! -d /etc/ssh ]; then
+	mkdir /etc/ssh
+fi
 mv /etc/sshd_config /etc/ssh
 mv /etc/authorized_keys /etc/ssh
 chown -R root:root /etc
