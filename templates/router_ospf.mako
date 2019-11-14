@@ -29,5 +29,5 @@ router ospf6
     interface ${data['name']}-eth${loop.index} area 0.0.0.0
     % endfor
     interface lo area 0.0.0.0
-    redistribute connected
+    redistribute static
 !
