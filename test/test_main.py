@@ -1,17 +1,14 @@
 from pexpect import pxssh
-from io import StringIO
-import sys
 import getpass
 import json
-from re import sub
 import time
 
 errors = 0
 
-def Send_cmd(iface,addr_liste,cmd,session):
+def ping_addr(iface,addr_liste,session):
    nombre_erreurs = 0
    for addresse in addr_liste:
-        final_cmd = '%s %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (cmd,iface,addresse)
+        final_cmd = 'ping6 -c1 -I %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (iface, addresse)
         session.sendline(final_cmd)
 
         session.prompt()
@@ -41,27 +38,43 @@ def get_ssh_to(router_port):
 def test_full_connectivity(test_data):
     test_address = test_data['Ip_addresses']
     errors = 0
-    cmd = 'ping6 -c1 -I'
     for router in routers.keys():
         info("Executing test on router %s"%router)
         session = routers[router]['ssh']
         for number_eth in range(0, routers[router]['nb_iface']):
             iface = '%s-eth%s'%(router,number_eth)
-            errors += Send_cmd(iface,test_address,cmd,session)
+            errors += ping_addr(iface,test_address,session)
     info('Test 2-full_connectivity ended with %s error(s).\n' %(errors))
     return errors
 
 def test_neighbour(test_data):
     errors = 0
-    cmd = 'ping6 -c1 -I'
     for router in test_data['routers'].keys():
         info('Testing node %s'%router)
         session = routers[router]['ssh']
         test_data_router = test_data['routers'][router]
         for idx, addr_list in enumerate(test_data_router):
             iface = '%s-eth%s'%(router, idx)
-            errors += Send_cmd(iface,addr_list,cmd,session)
+            errors += ping_addr(iface,addr_list,session)
     info('Test 1-neighbours ended with %s error(s).\n' %(errors))
+    return errors
+
+def test_ospf_routes(test_data):
+    errors = 0
+    for router in test_data.keys():
+        info('Testing the ospf routing table on router %s' % router)
+        session = routers[router]['ssh']
+        session.sendline('LD_LIBRARY_PATH=/usr/local/lib vtysh -c "show ipv6 route ospf6 json"')
+        session.prompt()
+        outp = session.before.decode('utf-8')
+        #remove the eventual complaints about conf file. And yes, linux use CRLF line endings in tty's
+        routes = json.loads(outp.split('\r\n',2)[-1])
+        for addr in test_data[router]:
+            if addr not in routes.keys():
+                errors += 1
+                info('The router %s lacks a route to %s' % (router, addr))
+    info('Test of the ospf routes ended with %s error(s).\n' %(errors))
+
     return errors
 
 def down_iface(data):
@@ -108,6 +121,7 @@ errors += test_full_connectivity(tests['2-full_connectivity'])
 #down_iface(setup['down-1-iface'])
 #time.sleep(30)
 #errors += test_full_connectivity(tests['2-full_connectivity'])
+errors += test_ospf_routes(tests['3-ospf_tables'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
