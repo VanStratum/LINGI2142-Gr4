@@ -1,13 +1,23 @@
 {
 	"name": "R10",
   "rnum": "10",
-  "ifaces": [
-    ["23", "22"]
-  ],
+  "ifaces": {
+    "routing": [
+      ["23", "22"]
+    ],
+    "lan": ["20::/60"]
+  },
   "bgp": {
 	  "self_as":"65004",
+	"e":{
+		"ifaces": ["bgp_as65001"],
+		"iface_ip": ["fde4::4:babe"],
+		"neighbors":["fde4::1:babe"],
+		"up1_as":["65001"]
+	},
     "i": {
 	    "neighbors" : ["11","9"]
-    }
+    },
+    "rr_clients":["5","4"]
   }
 }

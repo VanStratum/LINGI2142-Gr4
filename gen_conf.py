@@ -47,6 +47,9 @@ for t in templates:
         elif 'bgpd' in t:
             rp = '%s/%s_bgpd.conf'%(name,name)
             exe = 0
+        elif 'nftables' in t:
+            rp = '%s/%s_nftables.conf'%(name,name)
+            exe = 0
         elif 'start' in t:
             rp = '%s_start'%name
             exe = 1

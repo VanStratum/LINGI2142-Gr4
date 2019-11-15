@@ -34,6 +34,7 @@ service advanced-vty
 ! log stdout
 debug 
 !
+<% routeur_loopback = '%x' % int(data['rnum'])%>
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
   no bgp default ipv4-unicast
@@ -55,25 +56,27 @@ bgp router-id 1.0.0.${data['rnum']}
 % endif
 % if 'i' in bgp.keys():
   <% ibgp = bgp['i'] %>
-  % for n in ibgp['neighbors']:
+  % for ne in ibgp['neighbors']:
+<% n = '%x' % int(ne) %>
 ! ibgp session with fde4:4:f000:1::${n} 
   neighbor fde4:4:f000:1::${n} remote-as 65004
   address-family ipv6 unicast
   	neighbor fde4:4:f000:1::${n} activate
 	neighbor fde4:4:f000:1::${n} next-hop-self
-	neighbor fde4:4:f000:1::${n} update-source fde4:4:f000:1::${data['rnum']}
+	neighbor fde4:4:f000:1::${n} update-source fde4:4:f000:1::${routeur_loopback}
   exit-address-family
 % endfor
 %endif
 % if 'rr_clients' in bgp.keys():
-% for c in bgp['rr_clients']:
+% for cl in bgp['rr_clients']:
+<% c = '%x' % int(cl) %>
 ! Route reflector client : fde4:4:f000:1::${c}
   neighbor fde4:4:f000:1::${c} remote-as 65004
   address-family ipv6 unicast
 	neighbor fde4:4:f000:1::${c} activate
 	neighbor fde4:4:f000:1::${c} next-hop-self
-	neighbor fde4:4:f000:1::${c} update-source fde4:4:f000:1::${data['rnum']}
 	neighbor fde4:4:f000:1::${c} route-reflector-client
+	neighbor fde4:4:f000:1::${c} update-source fde4:4:f000:1::${routeur_loopback}
   exit-address-family
 % endfor
 % endif
