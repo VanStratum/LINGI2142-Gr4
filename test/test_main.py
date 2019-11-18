@@ -35,28 +35,28 @@ def get_ssh_to(router_port):
         print(e)
         return None
 
-def test_full_connectivity(test_data):
+def ping_all_iface(test_data):
     test_address = test_data['Ip_addresses']
     errors = 0
-    for router in routers.keys():
+    for router in test_address.keys():
         info("Executing test on router %s"%router)
         session = routers[router]['ssh']
         for number_eth in range(0, routers[router]['nb_iface']):
             iface = '%s-eth%s'%(router,number_eth)
-            errors += ping_addr(iface,test_address,session)
-    info('Test 2-full_connectivity ended with %s error(s).\n' %(errors))
+            errors += ping_addr(iface,test_address[router],session)
+    info('Test ping_all_iface ended with %s error(s).\n' %(errors))
     return errors
 
-def test_neighbour(test_data):
+def ping_sel_iface(test_data):
     errors = 0
     for router in test_data['routers'].keys():
         info('Testing node %s'%router)
         session = routers[router]['ssh']
         test_data_router = test_data['routers'][router]
-        for idx, addr_list in enumerate(test_data_router):
-            iface = '%s-eth%s'%(router, idx)
-            errors += ping_addr(iface,addr_list,session)
-    info('Test 1-neighbours ended with %s error(s).\n' %(errors))
+        for target in test_data_router:
+            iface = '%s-eth%s'%(router, target["if"])
+            errors += ping_addr(iface, target["ad"], session)
+    info('Test ping_sel_iface ended with %s error(s).\n' %(errors))
     return errors
 
 def test_ospf_routes(test_data):
@@ -116,12 +116,12 @@ info('Begin testing procedure.\n')
 tests = config['tests']
 setup = config['setup']
 errors = 0
-errors += test_neighbour(tests['1-neighbours'])
-errors += test_full_connectivity(tests['2-full_connectivity'])
+errors += ping_sel_iface(tests['1-neighbours'])
+errors += ping_all_iface(tests['2-full_connectivity'])
 #down_iface(setup['down-1-iface'])
 #time.sleep(30)
-#errors += test_full_connectivity(tests['2-full_connectivity'])
-errors += test_ospf_routes(tests['3-ospf_tables'])
+#errors += ping_all_iface(tests['2-full_connectivity'])
+#errors += test_ospf_routes(tests['3-ospf_tables'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
