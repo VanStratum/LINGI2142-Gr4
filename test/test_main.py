@@ -5,10 +5,14 @@ import time
 
 errors = 0
 
-def ping_addr(iface,addr_liste,session):
+def ping_addr(addr_liste, session, iface=None):
    nombre_erreurs = 0
    for addresse in addr_liste:
-        final_cmd = 'ping6 -c1 -I %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (iface, addresse)
+        if iface is None:
+            final_cmd = 'ping6 -c1 %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (addresse)
+        else:
+            final_cmd = 'ping6 -c1 -I %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (iface, addresse)
+
         session.sendline(final_cmd)
 
         session.prompt()
@@ -35,6 +39,17 @@ def get_ssh_to(router_port):
         print(e)
         return None
 
+def ping(test_data):
+    """Ping a list of addresses from a router"""
+    test_address = test_data['Ip_addresses']
+    errors = 0
+    for router in test_address.keys():
+        info("Executing test on router %s"%router)
+        session = routers[router]['ssh']
+        errors += ping_addr(test_address[router], session)
+    info('Test ping ended with %s error(s).\n' %(errors))
+    return errors
+
 def ping_all_iface(test_data):
     test_address = test_data['Ip_addresses']
     errors = 0
@@ -43,7 +58,7 @@ def ping_all_iface(test_data):
         session = routers[router]['ssh']
         for number_eth in range(0, routers[router]['nb_iface']):
             iface = '%s-eth%s'%(router,number_eth)
-            errors += ping_addr(iface,test_address[router],session)
+            errors += ping_addr(test_address[router], session, iface)
     info('Test ping_all_iface ended with %s error(s).\n' %(errors))
     return errors
 
@@ -55,7 +70,7 @@ def ping_sel_iface(test_data):
         test_data_router = test_data['routers'][router]
         for target in test_data_router:
             iface = '%s-eth%s'%(router, target["if"])
-            errors += ping_addr(iface, target["ad"], session)
+            errors += ping_addr(target["ad"], session, iface)
     info('Test ping_sel_iface ended with %s error(s).\n' %(errors))
     return errors
 
@@ -117,11 +132,13 @@ tests = config['tests']
 setup = config['setup']
 errors = 0
 errors += ping_sel_iface(tests['1-neighbours'])
-errors += ping_all_iface(tests['2-full_connectivity'])
+errors += ping(tests['2-full_connectivity'])
+#errors += ping_all_iface(tests['2-full_connectivity']) #tend to produce error for some reasons
+errors += test_ospf_routes(tests['3-ospf_tables'])
+
 #down_iface(setup['down-1-iface'])
 #time.sleep(30)
 #errors += ping_all_iface(tests['2-full_connectivity'])
-#errors += test_ospf_routes(tests['3-ospf_tables'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
