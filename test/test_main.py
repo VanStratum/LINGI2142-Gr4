@@ -6,6 +6,7 @@ import time
 errors = 0
 
 def ping_addr(addr_liste, session, iface=None):
+   """Ping addresses on an interface over a session"""
    nombre_erreurs = 0
    for addresse in addr_liste:
         if iface is None:
@@ -51,6 +52,7 @@ def ping(test_data):
     return errors
 
 def ping_all_iface(test_data):
+    """Ping a list of addresses from all interfaces of a router"""
     test_address = test_data['Ip_addresses']
     errors = 0
     for router in test_address.keys():
@@ -63,6 +65,7 @@ def ping_all_iface(test_data):
     return errors
 
 def ping_sel_iface(test_data):
+    """Ping lists of addresses from specified interfaces of a router"""
     errors = 0
     for router in test_data['routers'].keys():
         info('Testing node %s'%router)
@@ -75,6 +78,7 @@ def ping_sel_iface(test_data):
     return errors
 
 def test_ospf_routes(test_data):
+    """Check if the ospf routing table of a router is correct"""
     errors = 0
     for router in test_data.keys():
         info('Testing the ospf routing table on router %s' % router)
