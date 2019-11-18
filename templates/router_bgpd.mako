@@ -36,15 +36,13 @@ debug
 !
 
 <% routeur_loopback = '%x' % int(data['rnum'])%>
+! filter export to provider
+ipv6 prefix-list provider permit fde4:4::/32
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
   no bgp default ipv4-unicast
 % if 'e' in bgp.keys():
   <% ebgp = bgp['e'] %>
-% if 'is_provider' in ebgp.keys():
-! filter export to provider
-ip prefix-list provider_${ebgp['up1_as'][0]} permit fde4:4::/32
-% endif
 % for iface in ebgp['ifaces']:
   <% 
     neighbor = ebgp['neighbors'][loop.index] 
@@ -57,7 +55,7 @@ ip prefix-list provider_${ebgp['up1_as'][0]} permit fde4:4::/32
     neighbor ${neighbor} activate
     network fde4:4::/32
 % if 'is_provider' in ebgp.keys():
-    neighbor ${neighbor} prefix-list provider_${ebgp['up1_as'][0]} out
+    neighbor ${neighbor} prefix-list provider out
 %endif
   exit-address-family
 % endfor
