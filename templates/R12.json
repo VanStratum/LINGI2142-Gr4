@@ -12,8 +12,8 @@
 	  "self_as": "65004",
     "e": {
       "ifaces":     ["bgp_as65002"],
-      "iface_ip":   ["fde4::4:dead"],
-	    "neighbors":   ["fde4::2:bebe"],
+      "iface_ip":   ["fde4:4::4:dead"],
+	    "neighbors":   ["fde4:4::2:bebe"],
 	    "up1_as":     ["65002"]
     }
   }
