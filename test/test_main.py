@@ -5,8 +5,9 @@ import time
 
 errors = 0
 
-def ping_addr(addr_liste, session, iface=None):
-   """Ping addresses on an interface over a session"""
+def ping_addr(addr_liste, session, exp_up, iface=None):
+   """Ping addresses on an interface over a session.
+      exp_up specifies if the address is supposed to be reachable."""
    nombre_erreurs = 0
    for addresse in addr_liste:
         if iface is None:
@@ -18,7 +19,7 @@ def ping_addr(addr_liste, session, iface=None):
 
         session.prompt()
         temp = session.before.decode('utf-8')
-        if temp[-4:-2] == 'OK':
+        if (temp[-4:-2] == 'OK') == exp_up:
             status = 'OK'
         else:
             nombre_erreurs += 1
@@ -42,38 +43,42 @@ def get_ssh_to(router_port):
 
 def ping(test_data):
     """Ping a list of addresses from a router"""
-    test_address = test_data['Ip_addresses']
     errors = 0
-    for router in test_address.keys():
-        info("Executing test on router %s"%router)
-        session = routers[router]['ssh']
-        errors += ping_addr(test_address[router], session)
+    for test_type in ['Up', 'Down']:
+        info('Test adresses that should be %s' % (test_type))
+        for router in test_data[test_type].keys():
+            info("Executing test on router %s"%router)
+            session = routers[router]['ssh']
+            errors += ping_addr(test_data[test_type][router], session, test_type == 'Up')
     info('Test ping ended with %s error(s).\n' %(errors))
     return errors
 
 def ping_all_iface(test_data):
     """Ping a list of addresses from all interfaces of a router"""
-    test_address = test_data['Ip_addresses']
     errors = 0
-    for router in test_address.keys():
-        info("Executing test on router %s"%router)
-        session = routers[router]['ssh']
-        for number_eth in range(0, routers[router]['nb_iface']):
-            iface = '%s-eth%s'%(router,number_eth)
-            errors += ping_addr(test_address[router], session, iface)
+    for test_type in ['Up', 'Down']:
+        info('Test adresses that should be %s' % (test_type))
+        for router in test_data[test_type].keys():
+            info("Executing test on router %s"%router)
+            session = routers[router]['ssh']
+            for number_eth in range(0, routers[router]['nb_iface']):
+                iface = '%s-eth%s'%(router,number_eth)
+                errors += ping_addr(test_data[test_type][router], session, test_type == 'Up', iface)
     info('Test ping_all_iface ended with %s error(s).\n' %(errors))
     return errors
 
 def ping_sel_iface(test_data):
     """Ping lists of addresses from specified interfaces of a router"""
     errors = 0
-    for router in test_data['routers'].keys():
-        info('Testing node %s'%router)
-        session = routers[router]['ssh']
-        test_data_router = test_data['routers'][router]
-        for target in test_data_router:
-            iface = '%s-eth%s'%(router, target["if"])
-            errors += ping_addr(target["ad"], session, iface)
+    for test_type in ['Up', 'Down']:
+        info('Test adresses that should be %s' % (test_type))
+        for router in test_data[test_type].keys():
+            info('Testing node %s'%router)
+            session = routers[router]['ssh']
+            test_data_router = test_data[test_type][router]
+            for target in test_data_router:
+                iface = '%s-eth%s'%(router, target["if"])
+                errors += ping_addr(target["ad"], session, test_type=='Up', iface)
     info('Test ping_sel_iface ended with %s error(s).\n' %(errors))
     return errors
 
