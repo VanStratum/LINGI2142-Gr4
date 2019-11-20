@@ -106,8 +106,24 @@ def down_iface(data):
     for router in data.keys():
         for iface in data[router]:
             session = routers[router]['ssh']
+            iface = router + '-eth' + str(iface)
             cmd = 'ip link set ' + iface + ' down'
             session.sendline(cmd)
+
+def restore_iface(data):
+    info('Restoring downed interfaces')
+    for router in data.keys():
+        with open('templates/'+router+'.json', 'r') as fp:
+            config = json.load(fp)
+        address = config['ifaces']['routing']
+        for iface in data[router]:
+            name = router + '-eth' + str(iface)
+            session = routers[router]['ssh']
+            cmd = 'ip link set dev ' + name + ' up'
+            session.sendline(cmd)
+            cmd = 'ip -6 addr add fde4:4:f000::' + address[iface][0] + '/127 dev ' + name
+            session.sendline(cmd)
+
 
 info('Launching tests')
 
@@ -147,7 +163,9 @@ errors += test_ospf_routes(tests['3-ospf_tables'])
 
 #down_iface(setup['down-1-iface'])
 #time.sleep(30)
-#errors += ping_all_iface(tests['2-full_connectivity'])
+#restore_iface(setup['down-1-iface'])
+#time.sleep(30)
+#errors += ping(tests['2-full_connectivity'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
