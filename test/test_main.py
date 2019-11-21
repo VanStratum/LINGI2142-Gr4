@@ -3,17 +3,15 @@ import getpass
 import json
 import time
 
-errors = 0
-
 def ping_addr(addr_liste, session, exp_up, iface=None):
    """Ping addresses on an interface over a session.
       exp_up specifies if the address is supposed to be reachable."""
    nombre_erreurs = 0
    for addresse in addr_liste:
         if iface is None:
-            final_cmd = 'ping6 -c1 %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (addresse)
+            final_cmd = 'ping6 -c1 %s > /dev/null 2> /dev/null && /bin/echo \'OK\' || /bin/echo \'KO\' ' % (addresse)
         else:
-            final_cmd = 'ping6 -c1 -I %s %s > /dev/null 2> /dev/null && echo \'OK\' || echo \'KO\' ' % (iface, addresse)
+            final_cmd = 'ping6 -c1 -I %s %s > /dev/null 2> /dev/null && /bin/echo \'OK\' || /bin/echo \'KO\' ' % (iface, addresse)
 
         session.sendline(final_cmd)
 
@@ -23,8 +21,8 @@ def ping_addr(addr_liste, session, exp_up, iface=None):
             status = 'OK'
         else:
             nombre_erreurs += 1
-            status = 'ERROR'
-        print('%s: %s -> %s'%(status,iface, addresse))
+            status = '\033[31mERROR'
+        print('%s: %s -> %s\033[0m'%(status,iface, addresse))
    return nombre_erreurs
 
 def info(s):
@@ -92,11 +90,14 @@ def test_ospf_routes(test_data):
         session.prompt()
         outp = session.before.decode('utf-8')
         #remove the eventual complaints about conf file. And yes, linux use CRLF line endings in tty's
-        routes = json.loads(outp.split('\r\n',2)[-1])
-        for addr in test_data[router]:
-            if addr not in routes.keys():
-                errors += 1
-                info('The router %s lacks a route to %s' % (router, addr))
+        try:
+            routes = json.loads(outp.split('\r\n',2)[-1])
+            for addr in test_data[router]:
+                if addr not in routes.keys():
+                    errors += 1
+                    info('\033[31mThe router %s lacks a route to %s\033[0m' % (router, addr))
+        except ValueError:
+            print('\033[31mFailed to get the ospf tables, ignoring\033[0m')
     info('Test of the ospf routes ended with %s error(s).\n' %(errors))
 
     return errors
@@ -109,6 +110,7 @@ def down_iface(data):
             iface = router + '-eth' + str(iface)
             cmd = 'ip link set ' + iface + ' down'
             session.sendline(cmd)
+            session.prompt()
 
 def restore_iface(data):
     info('Restoring downed interfaces')
@@ -121,8 +123,10 @@ def restore_iface(data):
             session = routers[router]['ssh']
             cmd = 'ip link set dev ' + name + ' up'
             session.sendline(cmd)
+            session.prompt()
             cmd = 'ip -6 addr add fde4:4:f000::' + address[iface][0] + '/127 dev ' + name
             session.sendline(cmd)
+            session.prompt()
 
 
 info('Launching tests')
@@ -157,15 +161,22 @@ tests = config['tests']
 setup = config['setup']
 errors = 0
 errors += ping_sel_iface(tests['1-neighbours'])
-errors += ping(tests['2-full_connectivity'])
+errors += ping(tests['1-full_connectivity'])
 #errors += ping_all_iface(tests['2-full_connectivity']) #tend to produce error for some reasons
-errors += test_ospf_routes(tests['3-ospf_tables'])
+errors += test_ospf_routes(tests['1-ospf_tables'])
 
-#down_iface(setup['down-1-iface'])
-#time.sleep(30)
-#restore_iface(setup['down-1-iface'])
-#time.sleep(30)
+#info('%s errors so far' % str(errors))
+#down_iface(setup['2-down_R01'])  ####Simulate the dead of R01, expect havoc.
+#time.sleep(300)
 #errors += ping(tests['2-full_connectivity'])
+#errors += ping_sel_iface(tests['2-neighbours'])
+#errors += test_ospf_routes(tests['2-ospf_tables'])
+#restore_iface(setup['2-down_R01'])
+#
+#time.sleep(300)
+#errors += ping(tests['1-full_connectivity'])
+#errors += ping_sel_iface(tests['1-neighbours'])
+#errors += test_ospf_routes(tests['1-ospf_tables'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
