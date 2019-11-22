@@ -12,7 +12,7 @@
   "bgp": {
 	  "self_as": "65004",
     "e": {
-      "ifaces":     ["bgp_as6500r12"],
+      "ifaces":     ["bgp_as65001"],
       "iface_ip":   ["fde4:1:4::4:b0fe"],
 	    "neighbors":   ["fde4:1::4:bbbb"],
 	    "up1_as":     ["65001"]
