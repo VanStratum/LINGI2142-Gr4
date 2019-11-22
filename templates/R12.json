@@ -16,6 +16,9 @@
       "iface_ip":   ["fde4:4:f001::4:dead"],
 	    "neighbors":   ["fde4:4:f001::2:bebe"],
 	    "up1_as":     ["65002"]
+    },
+    "i":{
+	    "neighbors" : ["9","10","11","13"]
     }
   }
 }

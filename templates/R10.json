@@ -19,7 +19,7 @@
 		"is_provider":true
 	},
     "i": {
-	    "neighbors" : ["11","9"]
+	    "neighbors" : ["11","9","12","13"]
     },
     "rr_clients":["5","4"]
   }
