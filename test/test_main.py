@@ -26,7 +26,7 @@ def ping_addr(addr_liste, session, exp_up, iface=None):
    return nombre_erreurs
 
 def info(s):
-    print('[INFO] %s' % s)
+    print('\033[33m[INFO] %s\033[0m' % s)
 
 
 def get_ssh_to(router_port):
@@ -83,21 +83,23 @@ def ping_sel_iface(test_data):
 def test_ospf_routes(test_data):
     """Check if the ospf routing table of a router is correct"""
     errors = 0
-    for router in test_data.keys():
-        info('Testing the ospf routing table on router %s' % router)
-        session = routers[router]['ssh']
-        session.sendline('LD_LIBRARY_PATH=/usr/local/lib vtysh -c "show ipv6 route ospf6 json"')
-        session.prompt()
-        outp = session.before.decode('utf-8')
-        #remove the eventual complaints about conf file. And yes, linux use CRLF line endings in tty's
-        try:
-            routes = json.loads(outp.split('\r\n',2)[-1])
-            for addr in test_data[router]:
-                if addr not in routes.keys():
-                    errors += 1
-                    info('\033[31mThe router %s lacks a route to %s\033[0m' % (router, addr))
-        except ValueError:
-            print('\033[31mFailed to get the ospf tables, ignoring\033[0m')
+    for test_type in ['Up', 'Down']:
+        info('Test ospf route that should%s exist' % ('' if (test_type=='Up') else "n't"))
+        for router in test_data[test_type].keys():
+            print('Testing the ospf routing table on router %s' % router)
+            session = routers[router]['ssh']
+            session.sendline('LD_LIBRARY_PATH=/usr/local/lib vtysh -c "show ipv6 route ospf6 json"')
+            session.prompt()
+            outp = session.before.decode('utf-8')
+            try:
+                #remove the eventual complaints about conf file. And yes, linux use CRLF line endings in tty's
+                routes = json.loads(outp.split('\r\n',2)[-1])
+                for addr in test_data[test_type][router]:
+                    if (addr not in routes.keys()) == (test_type == 'Up'):
+                        errors += 1
+                        print('\033[31mThe router %s %s a route to %s\033[0m' % (router, 'lacks' if (test_type == 'Up') else 'has',addr))
+            except ValueError:
+                print('\033[31mFailed to get the ospf tables, ignoring\033[0m') # can happen if pexpect freaks out
     info('Test of the ospf routes ended with %s error(s).\n' %(errors))
 
     return errors
