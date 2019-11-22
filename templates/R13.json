@@ -1,0 +1,21 @@
+{
+	"name": "R13",
+  "rnum": "13",
+  "ifaces": {
+    "routing": [
+      ["2d", "2c"],
+      ["2F","2e"],
+      ["30","31"]
+    ],
+    "lan": []
+  },
+  "bgp": {
+	  "self_as": "65004",
+    "e": {
+      "ifaces":     ["bgp_as6500r12"],
+      "iface_ip":   ["fde4:1:4::4:b0fe"],
+	    "neighbors":   ["fde4:1::4:bbbb"],
+	    "up1_as":     ["65001"]
+    }
+  }
+}
