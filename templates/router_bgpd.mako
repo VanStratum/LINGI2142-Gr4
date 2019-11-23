@@ -42,10 +42,10 @@ ipv6 prefix-list provider permit fde4:4::/32
 ! setup route-map and communities
 route-map provider-policy-in permit 10
    set community 1
-route-map provider-policy-out permit 10
+route-map provider-policy-out deny 10
    match community 1
 !communities
-bgp community-list 1 deny 1:1
+bgp community-list 1 permit 65004:200
 
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
