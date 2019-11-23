@@ -38,6 +38,15 @@ debug
 <% routeur_loopback = '%x' % int(data['rnum'])%>
 ! filter export to provider
 ipv6 prefix-list provider permit fde4:4::/32
+
+! setup route-map and communities
+route-map provider-policy-in permit 10
+   set community 1
+route-map provider-policy-out permit 10
+   match community 1
+!communities
+bgp community-list 1 deny 1:1
+
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
   no bgp default ipv4-unicast
@@ -56,6 +65,11 @@ bgp router-id 1.0.0.${data['rnum']}
     network fde4:4::/32
 % if 'is_provider' in ebgp.keys():
     neighbor ${neighbor} prefix-list provider out
+%endif
+% if (int(data['rnum']) == 11): 
+    neighbor ${neighbor} route-map provider-policy-in in
+% else:
+    neighbor ${neighbor} route-map provider-policy-out out
 %endif
   exit-address-family
 % endfor
