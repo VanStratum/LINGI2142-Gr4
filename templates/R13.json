@@ -13,8 +13,8 @@
 	  "self_as": "65004",
     "e": {
       "ifaces":     ["bgp_as65001"],
-      "iface_ip":   ["fde4:1:4::4:bbbb"],
-	    "neighbors":   ["fde4:1:4::4:b0fe"],
+      "iface_ip":   ["fde4:1:600::4:bbbb"],
+	    "neighbors":   ["fde4:1:600::4:beef"],
 	    "up1_as":     ["65001"]
     },
     "i":{
