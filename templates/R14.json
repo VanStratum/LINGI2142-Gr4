@@ -14,7 +14,8 @@
       "ifaces":     ["bgp_as65008"],
       "iface_ip":   ["fde4:8:04::beef"],
 	    "neighbors":   ["fde4:8:04::cafe"],
-	    "up1_as":     ["65008"]
+	    "up1_as":     ["65008"],
+      "pwd": [""]
     },
     "i":{
 	    "neighbors":["9","10","11","12","13"],
