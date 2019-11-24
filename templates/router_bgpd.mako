@@ -45,6 +45,7 @@ route-map provider-policy-in permit 10
    set community 1
 route-map provider-policy-out deny 10
    match community 1
+route-map provider-policy-out permit 20
 !communities
 bgp community-list standard 1 permit 65004:200
 
