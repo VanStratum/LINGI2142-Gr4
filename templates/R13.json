@@ -16,7 +16,7 @@
       "iface_ip":   ["fde4:1:600::4:bbbb"],
 	    "neighbors":   ["fde4:1:600::4:beef"],
 	    "up1_as":     ["65001"],
-      "pwd": [""]
+      "pwd": ["lingi2142gr1gr4"]
     },
     "i":{
 	    "neighbors":["9","10","11","12","14"],
