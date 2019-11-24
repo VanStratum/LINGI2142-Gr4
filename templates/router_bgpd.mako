@@ -45,7 +45,7 @@ route-map provider-policy-in permit 10
 route-map provider-policy-out deny 10
    match community 1
 !communities
-bgp community-list 1 permit 65004:200
+bgp community-list standard 1 permit 65004:200
 
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}

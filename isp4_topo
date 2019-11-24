@@ -85,6 +85,10 @@ function mk_topo {
     add_link R12 R13
     # R13-eth2 links to R03-eth4
     add_link R13 R03
+    # R14-eth0 links to R11-eth2
+    add_link R14 R11
+    # R14-eth1 links to R09-eth3
+    add_link R14 R09
     
 
     echo "@@ Adding LANs"
@@ -105,5 +109,7 @@ function mk_topo {
     bridge_node R12 eth4 bgp_as65002
     #connect R13 to on eth5 to groupe 1
     bridge_node R13 eth5 bgp_as65001
+    #connect R14 to on eth6 to groupe 8
+    bridge_node R14 eth6 bgp_as65008
 }
 
