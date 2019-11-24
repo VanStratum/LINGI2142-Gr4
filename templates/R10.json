@@ -3,22 +3,25 @@
   "rnum": "10",
   "ifaces": {
     "routing": [
-      ["23", "22"]
+      ["23", "22"],
+      ["2a","2b"],
+      ["2c","2d"]
     ],
     "lan": ["20::/60"]
   },
   "bgp": {
 	  "self_as":"65004",
 	"e":{
-		"ifaces": ["bgp_as65001"],
+		"ifaces": ["bgp_as65003"],
 		"iface_ip": ["fde4::4:babe"],
-		"neighbors":["fde4::1:babe"],
-		"up1_as":["65001"],
-    "pwd": ["lingi2142gr1gr4"]
+    "pwd": ["lingi2142gr1gr4"],
+		"neighbors":["fde4::3:cccc"],
+		"up1_as":["65003"],
+		"is_provider":true
 	},
     "i": {
-	    "neighbors" : ["11","9"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#"]
+	    "neighbors" : ["11","9","12","13"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
     },
     "rr_clients": {
       "clients": ["5","4"],

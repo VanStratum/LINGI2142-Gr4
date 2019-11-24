@@ -19,8 +19,8 @@
       "pwd": [""]
     },
     "i": {
-	    "neighbors":  ["11","10"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#"]
+	    "neighbors":  ["11","10", "12", "13"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
     },
     "rr_clients": {
       "clients": ["1","5"],
