@@ -15,10 +15,12 @@
       "ifaces":     ["bgp_as65001"],
       "iface_ip":   ["fde4:1:600::4:bbbb"],
 	    "neighbors":   ["fde4:1:600::4:beef"],
-	    "up1_as":     ["65001"]
+	    "up1_as":     ["65001"],
+      "pwd": [""]
     },
     "i":{
-	    "neighbors":["9","10","11","12"]
+	    "neighbors":["9","10","11","12"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
     }
   }
 }
