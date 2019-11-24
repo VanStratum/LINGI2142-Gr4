@@ -56,7 +56,7 @@ table inet filter {
       % if 'e' in data['bgp']:
         % for iface in data['bgp']['e']['ifaces']:
     chain ${iface} {
-      icmpv6 type echo-request ip6 daddr fde4:4:f000::/63 counter drop
+      icmpv6 type echo-request ip6 daddr fde4:4:f000::/63 counter limit rate 10/second accept
       ip6 nexthdr 89 counter drop
       tcp dport 179 counter drop
     }
