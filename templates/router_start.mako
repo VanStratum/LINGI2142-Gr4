@@ -4,12 +4,18 @@
 
 ldconfig
 
-% if data['rnum'] != "-1":
+<% 
+  generic_iface = '%s-eth' % data['name']
+  is_router = data['rnum'] != "-1"
+  print(is_router)
+%>
+
+
+% if is_router:
 <% loopback_addr = 'fde4:4:f000:1::%x' % int(data['rnum']) %>
 ip -6 addr add ${loopback_addr}/128 dev lo
 % endif 
 
-<% generic_iface = '%s-eth' % data['name'] %>
 % for iface in data['ifaces']['routing']: 
   <% 
     dev = '%s%s' % (generic_iface, loop.index)
@@ -30,6 +36,11 @@ ip -6 addr add fde4:4:f000::${subnet}/127 dev ${dev}
   %> 
 ip link set dev ${dev} up
 ip -6 addr add fde4:4:f000:${subnet} dev ${dev}
+% if not is_router:
+<% lan_iface = "%s0" % lan_iface %>
+ip -6 r add ${data['ifaces']['gateway'][loop.index]} dev ${lan_iface}
+ip -6 r add ::/0 via ${data['ifaces']['gateway'][loop.index]}
+% endif
 % endfor
 
 # zebra is required to make the link between all FRRouting daemons
