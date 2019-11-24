@@ -16,8 +16,15 @@
 	    "up1_as":     ["65005"]
     },
     "i": {
-      "neighbors":  ["9","10"]
+      "neighbors":  ["9","10"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#"]
     },
-    "rr_clients":["1","4"]
+    "rr_clients": {
+      "clients": ["1","4"],
+      "pwd": [
+        "rrbgpREPLACEME%0",
+        "rrbgpREPLACEME%1"
+      ]
+    }
   }
 }

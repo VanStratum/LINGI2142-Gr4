@@ -15,12 +15,17 @@
 	    "ifaces":     ["bgp_as64512"],
 	    "iface_ip":   ["fde4::4:cafe"],
 	    "neighbors":  ["fde4::1"],
-	    "up1_as":     ["64512"]
+	    "up1_as":     ["64512"],
+      "pwd": [""]
     },
     "i": {
-	    "neighbors":  ["11","10"]
+	    "neighbors":  ["11","10"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#"]
     },
-    "rr_clients":["1","5"]
+    "rr_clients": {
+      "clients": ["1","5"],
+      "pwd" : ["rrbgpREPLACEME%0", "rrbgpREPLACEME%1"]
+    }
   }
 }
 

@@ -13,8 +13,17 @@
   "bgp": {
 	  "self_as" : "65004",
 	  "i":{
-		  "neighbors":["11","10"]
+		  "neighbors":["11","10"],
+      "pwd": ["rrbgpREPLACEME%1", "rrbgpREPLACEME%1"]
 	  },
-	  "rr_clients":["2","3","8","6"]
+	  "rr_clients": {
+      "clients": ["2","3","8","6"],
+      "pwd": [
+        "rrbgpREPLACEME%0",
+        "rrbgpREPLACEME%1",
+        "rrbgpREPLACEME%2",
+        "rrbgpREPLACEME%3"
+      ]
+    }
   }
 }

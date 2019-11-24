@@ -23,6 +23,7 @@ if the routeur make ibgp session the following attribute are mandatory:
 if the routeur is a route reflector the following attribute are mandatory:
 	9] RouteReflector_client: a list of all the client
 </%doc>
+<%! import re %>
 % if 'bgp' in data.keys():
   <% bgp = data['bgp'] %>
 !
@@ -57,9 +58,17 @@ bgp router-id 1.0.0.${data['rnum']}
 % if 'i' in bgp.keys():
   <% ibgp = bgp['i'] %>
   % for ne in ibgp['neighbors']:
-<% n = '%x' % int(ne) %>
+    <% 
+      n = '%x' % int(ne)
+      dec = int(n, 16)
+      r1 = "R%s" % ("0%s" % dec if dec < 10 else dec)
+      r2 = data['name']
+      replace = "%s%s" % ((r1, r2) if r1 < r2 else (r2, r1))
+      pwd = re.sub('REPLACEME', replace, ibgp['pwd'][loop.index])
+    %>
 ! ibgp session with fde4:4:f000:1::${n} 
   neighbor fde4:4:f000:1::${n} remote-as 65004
+  neighbor fde4:4:f000:1::${n} password ${pwd}
   address-family ipv6 unicast
   	neighbor fde4:4:f000:1::${n} activate
 	neighbor fde4:4:f000:1::${n} next-hop-self
@@ -68,10 +77,19 @@ bgp router-id 1.0.0.${data['rnum']}
 % endfor
 %endif
 % if 'rr_clients' in bgp.keys():
-% for cl in bgp['rr_clients']:
-<% c = '%x' % int(cl) %>
+<% rr = bgp['rr_clients'] %>
+% for cl in rr['clients']:
+<% 
+  c = '%x' % int(cl) 
+  dec = int(c, 16)
+  r1 = "R%s" % ("0%s" % dec if dec < 10 else dec)
+  r2 = data['name']
+  replace = "%s%s" % ((r1, r2) if r1 < r2 else (r2, r1))
+  pwd = re.sub('REPLACEME', replace, rr['pwd'][loop.index])
+%>
 ! Route reflector client : fde4:4:f000:1::${c}
   neighbor fde4:4:f000:1::${c} remote-as 65004
+  neighbor fde4:4:f000:1::${c} password ${pwd}
   address-family ipv6 unicast
 	neighbor fde4:4:f000:1::${c} activate
 	neighbor fde4:4:f000:1::${c} next-hop-self
