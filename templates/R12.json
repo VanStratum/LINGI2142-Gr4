@@ -19,8 +19,8 @@
       "pwd": [""]
     },
     "i":{
-	    "neighbors" : ["9","10","11","13"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
+	    "neighbors" : ["9","10","11","13","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
     }
   }
 }

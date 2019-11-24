@@ -4,7 +4,8 @@
   "ifaces": {
     "routing": [
       ["25", "24"],
-      ["28","29"]
+      ["28","29"],
+      ["33","32"]
     ],
     "lan": []
   },
@@ -18,8 +19,8 @@
       "pwd":  [""]
     },
     "i": {
-      "neighbors":  ["9","10","13","12"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
+      "neighbors":  ["9","10","13","12","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
     },
     "rr_clients": {
       "clients": ["1","4"],

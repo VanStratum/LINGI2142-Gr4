@@ -5,7 +5,8 @@
     "routing": [
       ["22", "23"],
 	    ["24", "25"],
-	    ["26", "27"]
+	    ["26", "27"],
+	    ["35","34"]
     ],
     "lan": []
   },
@@ -19,8 +20,8 @@
       "pwd": [""]
     },
     "i": {
-	    "neighbors":  ["11","10", "12", "13"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
+	    "neighbors":  ["11","10", "12", "13", "14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
     },
     "rr_clients": {
       "clients": ["1","5"],

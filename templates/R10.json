@@ -20,8 +20,8 @@
 		"is_provider":true
 	},
     "i": {
-	    "neighbors" : ["11","9","12","13"],
-      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#"]
+	    "neighbors" : ["11","9","12","13","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
     },
     "rr_clients": {
       "clients": ["5","4"],
