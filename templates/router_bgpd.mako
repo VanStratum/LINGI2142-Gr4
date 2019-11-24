@@ -40,13 +40,16 @@ debug
 ! filter export to provider
 ipv6 prefix-list provider permit fde4:4::/32
 
+!========== Route-Map ========================
 ! setup route-map and communities
 route-map provider-policy-in permit 10
    set community 1
 route-map provider-policy-out deny 10
    match community 1
 route-map provider-policy-out permit 20
-!communities
+
+!============ communities =====================
+! bgp community for provider
 bgp community-list standard 1 permit 65004:200
 
 router bgp ${bgp['self_as']}
@@ -72,11 +75,10 @@ bgp router-id 1.0.0.${data['rnum']}
 % if 'is_provider' in ebgp.keys():
     neighbor ${neighbor} prefix-list provider out
 %endif
-% if (int(data['rnum']) == 11): 
-    neighbor ${neighbor} route-map provider-policy-in in
-% else:
-    neighbor ${neighbor} route-map provider-policy-out out
+% if (int(data['rnum']) == 11 or int(data['rnum']) == 9): 
+    neighbor ${neighbor} route-map provider-policy-in in 
 %endif
+    neighbor ${neighbor} route-map provider-policy-out out
   exit-address-family
 % endfor
 % endif
