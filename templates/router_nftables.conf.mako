@@ -35,6 +35,16 @@ table inet filter {
 
   chain forward {
     type filter hook forward priority 0; policy accept;
+    % if bgp:
+      % if 'e' in data['bgp']:
+        % for iface in data['bgp']['e']['ifaces']:
+    iifname ${iface} tcp dport 22 ip6 daddr fde4:4:f000::/63 counter drop
+    iifname ${iface} icmpv6 type echo-request ip6 daddr fde4:4:f000::/63 counter drop
+    iifname ${iface} ip6 nexthdr 89 counter drop
+    iifname ${iface} tcp dport 179 counter drop
+        % endfor
+      % endif
+    % endif
   }
   
   chain output {
