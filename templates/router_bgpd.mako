@@ -48,6 +48,10 @@ bgp router-id 1.0.0.${data['rnum']}
   %>
 ! ebgp session with ${neighbor} on interface ${iface}
   neighbor ${neighbor} remote-as ${up1_as}
+<% pwd = ebgp['pwd'][loop.index] %>
+% if pwd != "":
+  neighbor ${neighbor} password ${pwd}
+% endif
   neighbor ${neighbor} interface ${iface}
   address-family ipv6 unicast
     neighbor ${neighbor} activate

@@ -13,7 +13,8 @@
 		"ifaces": ["bgp_as65001"],
 		"iface_ip": ["fde4::4:babe"],
 		"neighbors":["fde4::1:babe"],
-		"up1_as":["65001"]
+		"up1_as":["65001"],
+    "pwd": ["lingi2142gr1gr4"]
 	},
     "i": {
 	    "neighbors" : ["11","9"],
