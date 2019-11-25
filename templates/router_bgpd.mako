@@ -60,7 +60,7 @@ route-map share-policy-in permit 20
 
 !============ communities =====================
 ! bgp community for provider
-bgp community-list standard 1 deny 65004:200
+bgp community-list standard 1 permit 65004:200
 !bgp community for the customer
 bgp community-list cust permit 1:2500
 !bgp community for the share cost

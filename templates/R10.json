@@ -14,7 +14,7 @@
 	"e":{
 		"ifaces": ["bgp_as65003"],
 		"iface_ip": ["fde4:4:f001:3::beef"],
-    "pwd": ["lingi2142gr1gr4"],
+    		"pwd": ["lingi2142gr3gr4"],
 		"neighbors":["fde4:4:f001:3::cafe"],
 		"up1_as":["65003"],
 		"is_provider":true
