@@ -1,0 +1,26 @@
+{
+	"name": "R12",
+  "rnum": "12",
+  "ifaces": {
+    "routing": [
+      ["29", "2b"],
+      ["2b","2A"],
+      ["2e","2f"]
+    ],
+    "lan": []
+  },
+  "bgp": {
+	  "self_as": "65004",
+    "e": {
+      "ifaces":     ["bgp_as65002"],
+      "iface_ip":   ["fde4:4:f001::4:dead"],
+	    "neighbors":   ["fde4:4:f001::2:bebe"],
+	    "up1_as":     ["65002"],
+      "pwd": [""]
+    },
+    "i":{
+	    "neighbors" : ["9","10","11","13","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
+    }
+  }
+}

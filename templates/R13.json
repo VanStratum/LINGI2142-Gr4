@@ -1,0 +1,26 @@
+{
+	"name": "R13",
+  "rnum": "13",
+  "ifaces": {
+    "routing": [
+      ["2d", "2c"],
+      ["2F","2e"],
+      ["30","31"]
+    ],
+    "lan": []
+  },
+  "bgp": {
+	  "self_as": "65004",
+    "e": {
+      "ifaces":     ["bgp_as65001"],
+      "iface_ip":   ["fde4:1:600::4:bbbb"],
+	    "neighbors":   ["fde4:1:600::4:beef"],
+	    "up1_as":     ["65001"],
+      "pwd": ["lingi2142gr1gr4"]
+    },
+    "i":{
+	    "neighbors":["9","10","11","12","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
+    }
+  }
+}

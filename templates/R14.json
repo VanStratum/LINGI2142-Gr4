@@ -1,0 +1,25 @@
+{
+	"name": "R14",
+  "rnum": "14",
+  "ifaces": {
+    "routing": [
+      ["32", "33"],
+      ["34","35"]
+    ],
+    "lan": []
+  },
+  "bgp": {
+	  "self_as": "65004",
+    "e": {
+      "ifaces":     ["bgp_as65008"],
+      "iface_ip":   ["fde4:8:04::beef"],
+	    "neighbors":   ["fde4:8:04::cafe"],
+	    "up1_as":     ["65008"],
+      "pwd": ["NETWORK0408"]
+    },
+    "i":{
+	    "neighbors":["9","10","11","12","13"],
+	    "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
+    }
+  }
+}

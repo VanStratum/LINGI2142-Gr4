@@ -3,7 +3,9 @@
   "rnum": "11",
   "ifaces": {
     "routing": [
-      ["25", "24"]
+      ["25", "24"],
+      ["28","29"],
+      ["33","32"]
     ],
     "lan": []
   },
@@ -13,11 +15,19 @@
       "ifaces":     ["bgp_as65005"],
       "iface_ip":   ["fde4::4:beef"],
 	    "neighbors":   ["fde4::5:babe"],
-	    "up1_as":     ["65005"]
+	    "up1_as":     ["65005"],
+      "pwd":  [""]
     },
     "i": {
-      "neighbors":  ["9","10"]
+      "neighbors":  ["9","10","13","12","14"],
+      "pwd": ["ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#", "ibgpREPLACEME#","ibgpREPLACEME#"]
     },
-    "rr_clients":["1","4"]
+    "rr_clients": {
+      "clients": ["1","4"],
+      "pwd": [
+        "rrbgpREPLACEME%0",
+        "rrbgpREPLACEME%1"
+      ]
+    }
   }
 }
