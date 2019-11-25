@@ -47,10 +47,24 @@ route-map provider-policy-in permit 10
 route-map provider-policy-out deny 10
    match community 1
 route-map provider-policy-out permit 20
+! route-map for customer
+route-map cust-policy-in permit 10
+   match community cust
+   set local-preference 500
+route-map cust-policy-in permit 20
+! route-map for share cost
+route-map share-policy-in permit 10
+   match community share
+   set local-preference 400
+route-map share-policy-in permit 20
 
 !============ communities =====================
 ! bgp community for provider
 bgp community-list standard 1 deny 65004:200
+!bgp community for the customer
+bgp community-list cust permit 1:2500
+!bgp community for the share cost
+bgp community-list share permit 1:2400
 
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
@@ -77,6 +91,10 @@ bgp router-id 1.0.0.${data['rnum']}
 %endif
 % if (int(data['rnum']) == 11 or int(data['rnum']) == 9): 
     neighbor ${neighbor} route-map provider-policy-in in 
+% elif (int(data['rnum']) == 10):
+    neighbor ${neighbor} route-map  cust-policy-in in
+% elif (int(data['rnum']) == 14):
+    neighbor ${neighbor} route-map share-policy-in in
 %endif
     neighbor ${neighbor} route-map provider-policy-out out
   exit-address-family
