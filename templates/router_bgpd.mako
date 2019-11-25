@@ -49,12 +49,12 @@ route-map provider-policy-out deny 10
 route-map provider-policy-out permit 20
 ! route-map for customer
 route-map cust-policy-in permit 10
-   match community cust
+   set community cust
    set local-preference 500
 route-map cust-policy-in permit 20
 ! route-map for share cost
 route-map share-policy-in permit 10
-   match community share
+   set community share
    set local-preference 400
 route-map share-policy-in permit 20
 
