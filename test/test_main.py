@@ -101,7 +101,30 @@ def test_ospf_routes(test_data):
             except ValueError:
                 print('\033[31mFailed to get the ospf tables, ignoring\033[0m') # can happen if pexpect freaks out
     info('Test of the ospf routes ended with %s error(s).\n' %(errors))
+    return errors
 
+def test_bgp_routes(test_data):
+    """Check if the bgp routing table of a router is correct
+    Note that missing routes may be due to misconfiguration of other ASes"""
+    errors = 0
+    for test_type in ['Up', 'Down']:
+        info('Test bgp route that should%s exist' % ('' if (test_type=='Up') else "n't"))
+        for router in test_data[test_type].keys():
+            print('Testing the bgp routing table on router %s' % router)
+            session = routers[router]['ssh']
+            session.sendline('LD_LIBRARY_PATH=/usr/local/lib vtysh -c "show bgp json"')
+            session.prompt()
+            outp = session.before.decode('utf-8')
+            try:
+                #remove the eventual complaints about conf file. And yes, linux use CRLF line endings in tty's
+                bgp_state = json.loads(outp.split('\r\n',2)[-1])
+                for addr in test_data[test_type][router]:
+                    if (addr not in bgp_state['routes'].keys()) == (test_type == 'Up'):
+                        errors += 1
+                        print('\033[31mThe router %s %s a route to %s\033[0m' % (router, 'lacks' if (test_type == 'Up') else 'has',addr))
+            except ValueError:
+                print('\033[31mFailed to get the bgp tables, ignoring\033[0m') # can happen if pexpect freaks out
+    info('Test of the bgp routes ended with %s error(s).\n' %(errors))
     return errors
 
 def down_iface(data):
@@ -166,19 +189,20 @@ errors += ping_sel_iface(tests['1-neighbours'])
 errors += ping(tests['1-full_connectivity'])
 #errors += ping_all_iface(tests['2-full_connectivity']) #tend to produce error for some reasons
 errors += test_ospf_routes(tests['1-ospf_tables'])
+errors += test_bgp_routes(tests['1-bgp_tables'])
 
 #info('%s errors so far' % str(errors))
-#down_iface(setup['2-down_R01'])  ####Simulate the dead of R01, expect havoc.
-#time.sleep(300)
-#errors += ping(tests['2-full_connectivity'])
-#errors += ping_sel_iface(tests['2-neighbours'])
-#errors += test_ospf_routes(tests['2-ospf_tables'])
-#restore_iface(setup['2-down_R01'])
-#
-#time.sleep(300)
-#errors += ping(tests['1-full_connectivity'])
-#errors += ping_sel_iface(tests['1-neighbours'])
-#errors += test_ospf_routes(tests['1-ospf_tables'])
+down_iface(setup['2-down_R01'])  ####Simulate the dead of R01, expect havoc.
+time.sleep(300)
+errors += ping(tests['2-full_connectivity'])
+errors += ping_sel_iface(tests['2-neighbours'])
+errors += test_ospf_routes(tests['2-ospf_tables'])
+restore_iface(setup['2-down_R01'])
+
+time.sleep(300)
+errors += ping(tests['1-full_connectivity'])
+errors += ping_sel_iface(tests['1-neighbours'])
+errors += test_ospf_routes(tests['1-ospf_tables'])
 
 info('All tests done with %s error(s).\n' % str(errors))
 
