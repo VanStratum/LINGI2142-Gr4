@@ -12,8 +12,8 @@
 	  "self_as": "65004",
     "e": {
       "ifaces":     ["bgp_as65008"],
-      "iface_ip":   ["fde4:8:a007::beef"],
-	    "neighbors":   ["fde4:8:a007::cafe"],
+      "iface_ip":   ["fde4:8:b004::beef"],
+	    "neighbors":   ["fde4:8:b004::cafe"],
 	    "up1_as":     ["65008"],
       "pwd": ["NETWORK0408"]
     },
