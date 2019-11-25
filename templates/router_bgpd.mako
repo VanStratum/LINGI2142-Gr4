@@ -49,12 +49,12 @@ route-map provider-policy-out deny 10
 route-map provider-policy-out permit 20
 ! route-map for customer
 route-map cust-policy-in permit 10
-   set community cust
+   set community 2
    set local-preference 500
 route-map cust-policy-in permit 20
 ! route-map for share cost
 route-map share-policy-in permit 10
-   set community share
+   set community 3
    set local-preference 400
 route-map share-policy-in permit 20
 
@@ -62,9 +62,9 @@ route-map share-policy-in permit 20
 ! bgp community for provider
 bgp community-list standard 1 permit 65004:200
 !bgp community for the customer
-bgp community-list cust permit 1:2500
+bgp community-list 2 permit 1:2500
 !bgp community for the share cost
-bgp community-list share permit 1:2400
+bgp community-list 3 permit 1:2400
 
 router bgp ${bgp['self_as']}
 bgp router-id 1.0.0.${data['rnum']}
