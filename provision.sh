@@ -1,8 +1,9 @@
 #!/bin/sh
 
 sudo apt-get update
-sudo apt install -y nmap linux-headers-4.9-amd64 linux-image-4.9-amd64 asciidoc libgmp-dev
+sudo apt install -y nmap asciidoc libgmp-dev
 sudo apt-get autoremove -y
+sudo pip3 install pexpect
 
 mkdir /tmp/repos
 

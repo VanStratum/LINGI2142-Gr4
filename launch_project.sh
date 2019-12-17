@@ -1,5 +1,7 @@
+#! /bin/bash
+
 info () {
-  echo -e "\n[INFO] $*"
+  echo "[INFO] $*"
 }
 
 known_hosts="/home/vagrant/.ssh/known_hosts"
