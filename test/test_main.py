@@ -2,6 +2,7 @@ from pexpect import pxssh
 import getpass
 import json
 import time
+import sys
 
 def ping_addr(addr_liste, session, exp_up, iface=None):
    """Ping addresses on an interface over a session.
@@ -154,59 +155,58 @@ def restore_iface(data):
             session.prompt()
 
 
-info('Launching tests')
+if __name__ == "__main__":
+    info('Launching tests')
 
-""" Load tests configuration """
-config = None
-with open('test/test_cfg.json', 'r') as fp:
-    config = json.load(fp)
+    """ Load tests configuration """
+    config = None
+    with open('test/test_cfg.json', 'r') as fp:
+        config = json.load(fp)
 
-if config is None:
-    print('Cannot load config')
-    sys.exit()
+    if config is None:
+        print('Cannot load config')
+        sys.exit()
 
+    """ Open SSH session to each router """
+    info('Opening SSH sessions on each router.')
+    nbIfaceEachRouter = []
+    nb_routers = config['nb_routers']
+    routers = config['routers']
+    for router in routers.keys():
+        port = routers[router]['port']
+        nbIfaceEachRouter.append(routers[router]['nb_iface']) #stock the number of iface for each routeur
+        ssh_session = get_ssh_to(port)
+        if ssh_session:
+            info('SSH session to %s opened.'%router)
+        routers[router]['ssh'] = ssh_session
 
-""" Open SSH session to each router """
-info('Opening SSH sessions on each router.')
-nbIfaceEachRouter = []
-nb_routers = config['nb_routers']
-routers = config['routers']
-for router in routers.keys():
-    port = routers[router]['port']
-    nbIfaceEachRouter.append(routers[router]['nb_iface']) #stock the number of iface for each routeur
-    ssh_session = get_ssh_to(port)
-    if ssh_session:
-        info('SSH session to %s opened.'%router)
-    routers[router]['ssh'] = ssh_session
+    info('Begin testing procedure.\n')
 
-info('Begin testing procedure.\n')
+    errors = 0
+    for scenario in sys.argv[1:]:
+        info('Running scenario ' + scenario)
+        with open(scenario, 'r') as fp:
+            scenar = json.load(fp)
+        tests = scenar['tests']
 
+        if 'setup' in scenar:
+            down_iface(scenar['setup'])
+            time.sleep(300)
+        if 'neighbours' in tests:
+            errors += ping_sel_iface(tests['neighbours'])
+        if 'full_connectivity' in tests:
+            errors += ping(tests['full_connectivity'])
+        if 'ospf_tables' in tests:
+            errors += test_ospf_routes(tests['ospf_tables'])
+        if 'bgp_tables' in tests:
+            errors += test_bgp_routes(tests['bgp_tables'])
+        if 'setup' in scenar:
+            restore_iface(scenar['setup'])
+            time.sleep(300)
 
-tests = config['tests']
-setup = config['setup']
-errors = 0
-errors += ping_sel_iface(tests['1-neighbours'])
-errors += ping(tests['1-full_connectivity'])
-#errors += ping_all_iface(tests['2-full_connectivity']) #tend to produce error for some reasons
-errors += test_ospf_routes(tests['1-ospf_tables'])
-errors += test_bgp_routes(tests['1-bgp_tables'])
+    info('All tests done with %s error(s).\n' % str(errors))
 
-#info('%s errors so far' % str(errors))
-down_iface(setup['2-down_R01'])  ####Simulate the dead of R01, expect havoc.
-time.sleep(300)
-errors += ping(tests['2-full_connectivity'])
-errors += ping_sel_iface(tests['2-neighbours'])
-errors += test_ospf_routes(tests['2-ospf_tables'])
-restore_iface(setup['2-down_R01'])
-
-time.sleep(300)
-errors += ping(tests['1-full_connectivity'])
-errors += ping_sel_iface(tests['1-neighbours'])
-errors += test_ospf_routes(tests['1-ospf_tables'])
-
-info('All tests done with %s error(s).\n' % str(errors))
-
-""" Closing all SSH sessions """
-for router in routers.keys():
-    routers[router]['ssh'].logout()
-    info('SSH session to %s closed.'%router)
+    """ Closing all SSH sessions """
+    for router in routers.keys():
+        routers[router]['ssh'].logout()
+        info('SSH session to %s closed.'%router)
