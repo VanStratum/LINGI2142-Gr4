@@ -27,10 +27,10 @@ info "Launching ssh proxies"
 sudo chmod 600 id_rsa
 ./setup_ssh_proxy.sh
 
-if [ $1 -eq 1 ]
+if [[ $# -eq 1 ]]
 then
-  info "Waiting 30 seconds for the network booting before launching the tests"
-  sleep 30
+  info "Waiting $1 seconds for the network booting before launching the tests"
+  sleep $1
   python3 test/test_main.py
 fi
 
