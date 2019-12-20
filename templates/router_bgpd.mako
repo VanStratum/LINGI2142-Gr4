@@ -45,7 +45,7 @@ ipv6 prefix-list provider permit fde4:4::/32
 route-map provider-policy-in permit 10
    set community 1
 route-map provider-policy-out deny 10
-   match community 1
+   match community 3
 route-map provider-policy-out permit 20
 ! route-map for customer
 route-map cust-policy-in permit 10
@@ -56,6 +56,8 @@ route-map cust-policy-in permit 20
 route-map share-policy-in permit 10
    set community 3
    set local-preference 400
+route-map share-policy-out deny 10
+   match community 1
 route-map share-policy-in permit 20
 
 !============ communities =====================
@@ -91,12 +93,13 @@ bgp router-id 1.0.0.${data['rnum']}
 %endif
 % if (int(data['rnum']) == 11 or int(data['rnum']) == 9): 
     neighbor ${neighbor} route-map provider-policy-in in 
+    neighbor ${neighbor} route-map provider-policy-out out
 % elif (int(data['rnum']) == 10):
     neighbor ${neighbor} route-map  cust-policy-in in
 % elif (int(data['rnum']) == 14):
     neighbor ${neighbor} route-map share-policy-in in
+    neighbor ${neighbor} route-map share-policy-out out
 %endif
-    neighbor ${neighbor} route-map provider-policy-out out
   exit-address-family
 % endfor
 % endif
