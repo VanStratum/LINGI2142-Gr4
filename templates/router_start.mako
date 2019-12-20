@@ -7,7 +7,6 @@ ldconfig
 <% 
   generic_iface = '%s-eth' % data['name']
   is_router = data['rnum'] != "-1"
-  print(is_router)
 %>
 
 
