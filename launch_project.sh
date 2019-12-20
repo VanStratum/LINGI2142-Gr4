@@ -31,7 +31,7 @@ if [[ $# -eq 1 ]]
 then
   info "Waiting $1 seconds for the network booting before launching the tests"
   sleep $1
-  python3 test/test_main.py
+  python3 test/test_main.py test/base_scenario.json
 fi
 
 info "End of startup script"
