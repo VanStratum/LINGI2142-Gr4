@@ -1,4 +1,6 @@
-function info() {
+#! /bin/bash
+
+info() {
   echo "[INFO] $*"
 }
 
@@ -9,7 +11,7 @@ then
   pkill ncat
 fi
 
-for i in {01..12}
+for i in {01..14}
 do
   router="R$i"
   ncat --keep-open --sh-exec "exec sudo ip netns exec $router nc localhost 22" -l 22$i &

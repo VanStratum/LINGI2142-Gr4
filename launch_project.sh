@@ -1,5 +1,7 @@
+#! /bin/bash
+
 info () {
-  echo -e "\n[INFO] $*"
+  echo "[INFO] $*"
 }
 
 known_hosts="/home/vagrant/.ssh/known_hosts"
@@ -25,11 +27,11 @@ info "Launching ssh proxies"
 sudo chmod 600 id_rsa
 ./setup_ssh_proxy.sh
 
-if [ $1 -eq 1 ]
+if [[ $# -eq 1 ]]
 then
-  info "Waiting 30 seconds for the network booting before launching the tests"
-  sleep 30
-  python3 test/test_main.py
+  info "Waiting $1 seconds for the network booting before launching the tests"
+  sleep $1
+  python3 test/test_main.py test/base_scenario.json
 fi
 
 info "End of startup script"
